@@ -42,11 +42,16 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 36px 0; }
       .card, pre { border: 1px solid #214634; background: #0c1b14; border-radius: 16px; }
       .card { padding: 20px; }
+      .step { padding: 20px; border-left: 3px solid #52ed9b; }
       .label { color: #77a88f; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; }
       .value { margin-top: 8px; font-size: 1.05rem; overflow-wrap: anywhere; }
       h2 { margin-top: 48px; }
+      h3 { margin: 0 0 8px; }
+      p { line-height: 1.6; }
       pre { padding: 20px; overflow-x: auto; color: #bdfbd9; line-height: 1.5; }
       code { font-family: "SFMono-Regular", Consolas, monospace; }
+      a { color: #73f7b1; }
+      .warning { padding: 16px 18px; border: 1px solid #725b24; border-radius: 12px; background: #211b0d; color: #ffe3a0; }
       .status { display: inline-flex; align-items: center; gap: 8px; color: #a8c7b8; }
       .dot { width: 9px; height: 9px; border-radius: 50%; background: #52ed9b; box-shadow: 0 0 18px #52ed9b; }
       footer { margin-top: 52px; color: #77a88f; }
@@ -76,6 +81,19 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   "sources": [{ "title": "...", "url": "..." }],
   "researchedAt": "..."
 }</code></pre>
+
+      <h2>Buy one report</h2>
+      <p>The payment is signed locally by the buyer client. This website never asks for a private key.</p>
+      <div class="grid">
+        <div class="card step"><h3>1. Get the client</h3><p>Clone the <a href="https://github.com/stgzwpzy8w-eng/x402-crypto-research-api">GitHub repository</a> and run <code>pnpm install</code>.</p></div>
+        <div class="card step"><h3>2. Prepare a wallet</h3><p>Use a dedicated low-balance wallet with at least ${safePrice} USDC on Base.</p></div>
+        <div class="card step"><h3>3. Request research</h3><p>Save the two values below in <code>.env.local</code>, then run the client command.</p></div>
+      </div>
+
+      <pre><code>EVM_PRIVATE_KEY=0xYOUR_DEDICATED_BUYER_WALLET_PRIVATE_KEY
+API_URL=https://x402-crypto-research-api-production.up.railway.app/research</code></pre>
+      <pre><code>pnpm client "Give a concise current status update on the Base ecosystem."</code></pre>
+      <p class="warning">Mainnet purchase: ${safePrice} USDC is real money. Never paste a private key into this website, a chat, GitHub, or Railway.</p>
 
       <p class="status"><span class="dot"></span> Service online</p>
       <footer>Payments are sent to <code>${safePayTo}</code>. ${paymentNotice}</footer>
