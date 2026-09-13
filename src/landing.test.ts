@@ -23,7 +23,7 @@ test("renders public API details and escapes environment values", () => {
   assert.match(html, /Free static preview/);
   assert.match(html, /previewTopic\.textContent/);
   assert.match(html, /action="\/buy"/);
-  assert.match(html, /Continue to payment/);
+  assert.match(html, /Buy report/);
   assert.match(html, /first three external buyers/);
   assert.match(html, /Sources included/);
   assert.match(html, /Risks and uncertainty/);
