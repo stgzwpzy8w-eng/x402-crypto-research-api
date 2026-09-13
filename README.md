@@ -9,11 +9,40 @@ Content-Type: application/json
 {"topic":"What changed in the Solana ecosystem this week?"}
 ```
 
-Endpointen kräver en `exact`-betalning i test-USDC via x402 innan OpenAI gör en aktuell webbresearch och returnerar rapporten. Standardnätet är Base Sepolia, så testflödet använder inga riktiga pengar.
+Endpointen kräver en `exact`-betalning via x402 innan OpenAI gör en aktuell webbresearch och returnerar rapporten. Den publicerade tjänsten kör på Base mainnet och kostar för närvarande `$0.08` i riktig USDC per rapport. Den lokala standardkonfigurationen använder däremot Base Sepolia och test-USDC.
 
 Den driftsatta tjänsten finns på [x402-crypto-research-api-production.up.railway.app](https://x402-crypto-research-api-production.up.railway.app). Startsidan visar aktuell pris- och nätverksinformation, och `GET /health` kan användas som enkel statuskontroll.
 
 `POST /research` deklarerar Bazaar-metadata enligt x402 v2 så att kompatibla facilitatorer och klienter kan läsa hur endpointen anropas och vilket svar den ger. Katalogisering beror på facilitatorns stöd och sker normalt i samband med en genomförd betalning.
+
+## Köp en rapport från den publicerade tjänsten
+
+Köparen behöver Node.js 22+, pnpm och en separat wallet med minst `$0.08` USDC på Base. Använd en wallet med lågt saldo, eftersom detta är ett mainnet-köp med riktiga pengar.
+
+1. Klona projektet och installera köparklienten:
+
+```powershell
+git clone https://github.com/stgzwpzy8w-eng/x402-crypto-research-api.git
+cd x402-crypto-research-api
+pnpm install
+```
+
+2. Skapa `.env.local` och lägg in följande lokalt:
+
+```dotenv
+EVM_PRIVATE_KEY=0xDEN_SEPARATA_KÖPARWALLETENS_PRIVATA_NYCKEL
+API_URL=https://x402-crypto-research-api-production.up.railway.app/research
+```
+
+3. Beställ rapporten:
+
+```powershell
+pnpm client "Give a concise current status update on the Base ecosystem."
+```
+
+Klienten läser betalningskravet, signerar betalningen lokalt och skriver ut rapporten efter en lyckad avveckling. Den ska avsluta med `Payment settled successfully.`
+
+Den privata nyckeln ska aldrig klistras in på webbplatsen, i en chatt, GitHub eller Railway. Den behövs bara i köparens lokala `.env.local`, som ignoreras av Git.
 
 ## Flödet
 
@@ -23,7 +52,7 @@ Den driftsatta tjänsten finns på [x402-crypto-research-api-production.up.railw
 4. Facilitatorn verifierar och avvecklar betalningen.
 5. Först därefter körs researchen och JSON-svaret returneras.
 
-## Krav
+## Krav för lokal serverutveckling
 
 - Node.js 22+
 - pnpm
