@@ -1,4 +1,5 @@
 import express, { type NextFunction, type Request, type Response } from "express";
+import { createCdpFacilitatorClient } from "@coinbase/cdp-sdk/x402";
 import { HTTPFacilitatorClient } from "@x402/core/server";
 import { ExactEvmScheme } from "@x402/evm/exact/server";
 import { paymentMiddleware, x402ResourceServer } from "@x402/express";
@@ -14,7 +15,12 @@ import { normalizeTopic } from "./topic.js";
 
 const config = loadServerConfig();
 const research = createResearcher(config.openAiApiKey, config.openAiModel);
-const facilitator = new HTTPFacilitatorClient({ url: config.facilitatorUrl });
+const facilitator = config.facilitatorProvider === "cdp"
+  ? createCdpFacilitatorClient({
+      apiKeyId: config.cdpApiKeyId,
+      apiKeySecret: config.cdpApiKeySecret,
+    })
+  : new HTTPFacilitatorClient({ url: config.facilitatorUrl });
 const resourceServer = new x402ResourceServer(facilitator)
   .register(config.network, new ExactEvmScheme())
   .registerExtension(bazaarResourceServerExtension);
@@ -101,4 +107,5 @@ app.listen(config.port, () => {
   console.log(
     `POST /research costs ${config.price} USDC on ${config.network}; payments go to ${config.payTo}`,
   );
+  console.log(`x402 facilitator: ${config.facilitatorProvider}`);
 });

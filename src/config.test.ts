@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { validatePaymentConfig } from "./config.ts";
+import { parseFacilitatorProvider, validatePaymentConfig } from "./config.ts";
 
 const testFacilitator = "https://x402.org/facilitator";
 
@@ -40,4 +40,10 @@ test("rejects networks outside the MVP allowlist", () => {
     () => validatePaymentConfig("$0.08", "eip155:1", testFacilitator, false),
     /Base Sepolia.*Base mainnet/,
   );
+});
+
+test("accepts only the supported facilitator providers", () => {
+  assert.equal(parseFacilitatorProvider(undefined), "public");
+  assert.equal(parseFacilitatorProvider(" CDP "), "cdp");
+  assert.throws(() => parseFacilitatorProvider("unknown"), /public or cdp/);
 });
