@@ -11,7 +11,7 @@ import { loadServerConfig } from "./config.js";
 import { formatResearchCost } from "./cost.js";
 import { demoResearchResult } from "./demo.js";
 import { createLlmsText, createOpenApiDocument } from "./discovery.js";
-import { renderLandingPage } from "./landing.js";
+import { renderLandingPage, renderResearchResultPage } from "./landing.js";
 import { createResearcher } from "./research.js";
 import { normalizeTopic } from "./topic.js";
 
@@ -48,6 +48,16 @@ app.get("/llms.txt", (_req: Request, res: Response) => {
 app.use(
   paymentMiddleware(
     {
+      "GET /buy": {
+        accepts: {
+          scheme: "exact",
+          price: config.price,
+          network: config.network,
+          payTo: config.payTo,
+        },
+        description: "Current crypto research report in the browser",
+        mimeType: "text/html",
+      },
       "POST /research": {
         accepts: {
           scheme: "exact",
@@ -90,8 +100,23 @@ app.use(
       },
     },
     resourceServer,
+    {
+      appName: "x402 Crypto Research API",
+      testnet: config.network !== "eip155:8453",
+    },
   ),
 );
+
+app.get("/buy", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const topic = normalizeTopic(req.query.topic);
+    const { result, usage } = await research(topic);
+    console.log(formatResearchCost(config.openAiModel, usage));
+    res.type("html").send(renderResearchResultPage(result));
+  } catch (error) {
+    next(error);
+  }
+});
 
 app.post("/research", async (req: Request, res: Response, next: NextFunction) => {
   try {
