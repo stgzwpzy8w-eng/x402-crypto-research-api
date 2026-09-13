@@ -9,6 +9,7 @@ import {
 } from "@x402/extensions/bazaar";
 import { loadServerConfig } from "./config.js";
 import { formatResearchCost } from "./cost.js";
+import { demoResearchResult } from "./demo.js";
 import { renderLandingPage } from "./landing.js";
 import { createResearcher } from "./research.js";
 import { normalizeTopic } from "./topic.js";
@@ -33,6 +34,9 @@ app.get("/", (_req: Request, res: Response) => {
 });
 app.get("/health", (_req: Request, res: Response) => {
   res.json({ status: "ok" });
+});
+app.get("/demo", (_req: Request, res: Response) => {
+  res.json(demoResearchResult);
 });
 app.use(
   paymentMiddleware(
