@@ -51,6 +51,10 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       pre { padding: 20px; overflow-x: auto; color: #bdfbd9; line-height: 1.5; }
       code { font-family: "SFMono-Regular", Consolas, monospace; }
       a { color: #73f7b1; }
+      .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 8px; }
+      .button { display: inline-block; padding: 12px 16px; border: 1px solid #52ed9b; border-radius: 10px; color: #07110d; background: #73f7b1; font-weight: 750; text-decoration: none; }
+      .button.secondary { color: #bdfbd9; background: transparent; border-color: #2b694a; }
+      .links { display: flex; flex-wrap: wrap; gap: 18px; padding: 0; list-style: none; }
       .warning { padding: 16px 18px; border: 1px solid #725b24; border-radius: 12px; background: #211b0d; color: #ffe3a0; }
       .status { display: inline-flex; align-items: center; gap: 8px; color: #a8c7b8; }
       .dot { width: 9px; height: 9px; border-radius: 50%; background: #52ed9b; box-shadow: 0 0 18px #52ed9b; }
@@ -62,6 +66,10 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       <div class="eyebrow">Pay per request with USDC</div>
       <h1>Current crypto research for humans and agents.</h1>
       <p class="lead">Send one topic to the API. x402 handles payment before a sourced, up-to-date research report is generated.</p>
+      <div class="actions">
+        <a class="button" href="/demo">View free demo</a>
+        <a class="button secondary" href="#agent-quickstart">Agent quickstart</a>
+      </div>
 
       <div class="grid">
         <div class="card"><div class="label">Endpoint</div><div class="value"><code>POST /research</code></div></div>
@@ -84,6 +92,39 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
 
       <h2>See a free preview</h2>
       <p>Open the <a href="/demo">static demo response</a> to inspect the response format without a wallet, payment, or API cost.</p>
+
+      <h2 id="agent-quickstart">Agent quickstart</h2>
+      <p>Any Node.js agent can use an x402-compatible fetch client. The client handles the payment challenge and retries the request automatically.</p>
+      <pre><code>npm install @x402/fetch @x402/evm viem
+
+import { ExactEvmScheme } from "@x402/evm/exact/client";
+import { wrapFetchWithPayment, x402Client } from "@x402/fetch";
+import { privateKeyToAccount } from "viem/accounts";
+
+const client = new x402Client();
+client.register("eip155:*", new ExactEvmScheme(
+  privateKeyToAccount(process.env.EVM_PRIVATE_KEY)
+));
+
+const paidFetch = wrapFetchWithPayment(fetch, client);
+const response = await paidFetch(
+  "https://x402-crypto-research-api-production.up.railway.app/research",
+  {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ topic: "What changed on Base this week?" })
+  }
+);
+const report = await response.json();</code></pre>
+      <p class="warning">Keep <code>EVM_PRIVATE_KEY</code> in the agent's secret store and use a dedicated low-balance wallet.</p>
+
+      <h2>Machine-readable documentation</h2>
+      <ul class="links">
+        <li><a href="/openapi.json">OpenAPI specification</a></li>
+        <li><a href="/llms.txt">LLM integration guide</a></li>
+        <li><a href="/health">Service health</a></li>
+        <li><a href="https://github.com/stgzwpzy8w-eng/x402-crypto-research-api">GitHub source and client</a></li>
+      </ul>
 
       <h2>Buy one report</h2>
       <p>The payment is signed locally by the buyer client. This website never asks for a private key.</p>
