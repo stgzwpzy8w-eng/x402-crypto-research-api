@@ -50,10 +50,23 @@ Standardinställningarna är:
 OPENAI_MODEL=gpt-5.4-mini
 X402_PRICE=$0.08
 X402_NETWORK=eip155:84532
+X402_FACILITATOR_PROVIDER=public
 X402_FACILITATOR_URL=https://x402.org/facilitator
 ALLOW_MAINNET=false
 PORT=4021
 ```
+
+### Coinbase CDP-facilitator
+
+Coinbase CDP kan användas på Base Sepolia utan att byta till riktiga pengar. Skapa en Secret API Key i CDP-portalen och lägg följande tre variabler i Railway eller `.env.local`:
+
+```dotenv
+X402_FACILITATOR_PROVIDER=cdp
+CDP_API_KEY_ID=organizations/.../apiKeys/...
+CDP_API_KEY_SECRET=din-hemliga-nyckel
+```
+
+Använd värdet `name` från den nedladdade JSON-filen som `CDP_API_KEY_ID` och värdet `privateKey` som `CDP_API_KEY_SECRET`. Nycklarna ska aldrig läggas i GitHub eller klistras in i en chatt. `X402_NETWORK=eip155:84532` och `ALLOW_MAINNET=false` ska vara kvar under testningen.
 
 ## Kör servern
 
