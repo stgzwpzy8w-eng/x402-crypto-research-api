@@ -12,9 +12,15 @@ test("renders public API details and escapes environment values", () => {
   assert.match(html, /POST \/research/);
   assert.match(html, /\$0\.08 USDC/);
   assert.match(html, /eip155:84532/);
-  assert.match(html, /&lt;unsafe&gt;/);
-  assert.doesNotMatch(html, /<unsafe>/);
+  assert.match(html, /&lt;unsafe&gt;/);  assert.doesNotMatch(html, /<unsafe>/);
   assert.match(html, /Testnet service; test USDC has no real-world value/);
+  assert.match(html, /href="\/demo"/);
+  assert.match(html, /without a wallet, payment, or API cost/);
+  assert.match(html, /Agent quickstart/);
+  assert.match(html, /@x402\/fetch/);
+  assert.match(html, /href="\/openapi\.json"/);
+  assert.match(html, /href="\/llms\.txt"/);
+  assert.match(html, /href="\/health"/);
 });
 
 test("warns that Base mainnet uses real USDC", () => {
