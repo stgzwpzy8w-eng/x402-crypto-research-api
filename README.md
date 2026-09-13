@@ -11,6 +11,10 @@ Content-Type: application/json
 
 Endpointen kräver en `exact`-betalning i test-USDC via x402 innan OpenAI gör en aktuell webbresearch och returnerar rapporten. Standardnätet är Base Sepolia, så testflödet använder inga riktiga pengar.
 
+Den driftsatta tjänsten finns på [x402-crypto-research-api-production.up.railway.app](https://x402-crypto-research-api-production.up.railway.app). Startsidan visar aktuell pris- och nätverksinformation, och `GET /health` kan användas som enkel statuskontroll.
+
+`POST /research` deklarerar Bazaar-metadata enligt x402 v2 så att kompatibla facilitatorer och klienter kan läsa hur endpointen anropas och vilket svar den ger. Katalogisering beror på facilitatorns stöd och sker normalt i samband med en genomförd betalning.
+
 ## Flödet
 
 1. Klienten skickar `POST /research`.
