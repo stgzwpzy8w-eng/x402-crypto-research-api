@@ -10,6 +10,7 @@ import {
 import { loadServerConfig } from "./config.js";
 import { formatResearchCost } from "./cost.js";
 import { demoResearchResult } from "./demo.js";
+import { createLlmsText, createOpenApiDocument } from "./discovery.js";
 import { renderLandingPage } from "./landing.js";
 import { createResearcher } from "./research.js";
 import { normalizeTopic } from "./topic.js";
@@ -37,6 +38,12 @@ app.get("/health", (_req: Request, res: Response) => {
 });
 app.get("/demo", (_req: Request, res: Response) => {
   res.json(demoResearchResult);
+});
+app.get("/openapi.json", (_req: Request, res: Response) => {
+  res.json(createOpenApiDocument(config));
+});
+app.get("/llms.txt", (_req: Request, res: Response) => {
+  res.type("text/plain").send(createLlmsText(config));
 });
 app.use(
   paymentMiddleware(
