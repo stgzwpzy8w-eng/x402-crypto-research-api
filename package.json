@@ -8,7 +8,7 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "tsc -p tsconfig.build.json && node dist/server.js",
     "client": "tsc -p tsconfig.build.json && node dist/client.js",
-    "test": "node --test src/topic.test.ts src/payment-flow.test.ts src/cost.test.ts src/landing.test.ts",
+    "test": "node --test src/topic.test.ts src/payment-flow.test.ts src/cost.test.ts src/landing.test.ts src/config.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "engines": {

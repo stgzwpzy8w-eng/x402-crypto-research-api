@@ -51,6 +51,7 @@ OPENAI_MODEL=gpt-5.4-mini
 X402_PRICE=$0.08
 X402_NETWORK=eip155:84532
 X402_FACILITATOR_URL=https://x402.org/facilitator
+ALLOW_MAINNET=false
 PORT=4021
 ```
 
@@ -124,6 +125,19 @@ Betapriset är `$0.08` USDC. Ett uppmätt test kostade uppskattningsvis `$0.0319
 - Lägg till idempotens, jobbspårning, återförsök och en tydlig återbetalningspolicy före produktion.
 - Ingen cache, rate limiting eller databas.
 - Base Sepolia och den publika test-facilitatorn är endast avsedda för utveckling. Byt konfiguration och gör en separat säkerhetsgranskning före mainnet.
+
+## Mainnet-spärr
+
+Servern accepterar bara Base Sepolia (`eip155:84532`) och Base mainnet (`eip155:8453`). Mainnet startar inte om inte `ALLOW_MAINNET=true` har satts uttryckligen. Den vägrar också använda den kostnadsfria `x402.org`-facilitatorn på mainnet, eftersom den endast stöder testnät.
+
+Priset måste skrivas som exempelvis `$0.08`, får ha högst sex decimaler och är hårt begränsat till högst `$10` för att minska risken för ett felaktigt miljövärde.
+
+Innan mainnet:
+
+1. Välj och konfigurera en produktionsfacilitator som stöder Base mainnet.
+2. Bekräfta mottagaradressen igen och sätt `X402_NETWORK=eip155:8453`.
+3. Kör ett kontrollerat köp med en separat wallet och ett litet saldo.
+4. Sätt `ALLOW_MAINNET=true` först när punkterna ovan är verifierade.
 
 ## Dokumentation
 
