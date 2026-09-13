@@ -72,7 +72,12 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .demo-form { display: flex; gap: 10px; margin: 20px 0; }
       .demo-input { flex: 1; min-width: 0; padding: 13px 14px; border: 1px solid #2b694a; border-radius: 10px; background: #07110d; color: #e8fff4; font: inherit; }
       .demo-input:focus { outline: 2px solid #52ed9b; outline-offset: 2px; }
-      .purchase { margin: 48px 0; padding: 26px; border: 1px solid #725b24; border-radius: 18px; background: #17150e; }
+      .purchase { margin: 28px 0 20px; padding: 28px; border: 1px solid #d3a93a; border-radius: 18px; background: linear-gradient(145deg, #211b0d, #12170f); box-shadow: 0 18px 55px rgba(0,0,0,.28); }
+      .purchase h2 { margin: 6px 0 8px; font-size: clamp(1.7rem, 4vw, 2.35rem); }
+      .purchase-top { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px; }
+      .price-pill { padding: 9px 12px; border-radius: 999px; background: #ffe39a; color: #241b05; font-weight: 850; white-space: nowrap; }
+      .purchase .demo-form { margin-bottom: 12px; }
+      .purchase .button { padding-inline: 22px; }
       @media (max-width: 620px) { .demo-form { flex-direction: column; } }
       .links { display: flex; flex-wrap: wrap; gap: 18px; padding: 0; list-style: none; }
       .warning { padding: 16px 18px; border: 1px solid #725b24; border-radius: 12px; background: #211b0d; color: #ffe3a0; }
@@ -86,8 +91,25 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       <div class="eyebrow">Pay per request with USDC</div>
       <h1>Current crypto research for humans and agents.</h1>
       <p class="lead">Send one topic to the API. x402 handles payment before a sourced, up-to-date research report is generated.</p>
+
+      <section class="purchase" id="buy">
+        <div class="purchase-top">
+          <div>
+            <div class="eyebrow">Live paid research</div>
+            <h2>Get a current research report</h2>
+          </div>
+          <div class="price-pill">${safePrice} USDC</div>
+        </div>
+        <p>Type what you want researched. You will see the secure wallet payment screen before anything is charged.</p>
+        <form class="demo-form" action="/buy" method="get">
+          <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required placeholder="Example: What changed on Base this week?" aria-label="Paid research topic" />
+          <button class="button" type="submit">Buy report</button>
+        </form>
+        <p class="muted">Introductory price for the first three external buyers · real USDC on Base · report opens here after payment.</p>
+      </section>
+
       <div class="actions">
-        <a class="button" href="#free-demo">Try free preview</a>
+        <a class="button secondary" href="#free-demo">See free preview first</a>
         <a class="button secondary" href="#agent-quickstart">Agent quickstart</a>
       </div>
 
@@ -132,17 +154,6 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       </article>
 
       <p class="muted">Building an agent? Open the <a href="/demo">raw JSON demo response</a> instead.</p>
-
-      <section class="purchase" id="buy">
-        <div class="eyebrow">Live paid research</div>
-        <h2>Buy a current report</h2>
-        <p>Enter your topic, continue to the secure x402 payment screen, and approve ${safePrice} USDC in your wallet. The finished report opens in this browser.</p>
-        <form class="demo-form" action="/buy" method="get">
-          <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required placeholder="What should the API research?" aria-label="Paid research topic" />
-          <button class="button" type="submit">Continue to payment</button>
-        </form>
-        <p class="muted">Introductory price for the first three external buyers. Payment uses real USDC on Base mainnet.</p>
-      </section>
 
       <h2 id="agent-quickstart">Agent quickstart</h2>
       <p>Any Node.js agent can use an x402-compatible fetch client. The client handles the payment challenge and retries the request automatically.</p>
