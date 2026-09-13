@@ -21,6 +21,9 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   const safePrice = escapeHtml(price);
   const safeNetwork = escapeHtml(network);
   const safePayTo = escapeHtml(payTo);
+  const paymentNotice = network === "eip155:8453"
+    ? "Mainnet service; payments use real USDC on Base."
+    : "Testnet service; test USDC has no real-world value.";
 
   return `<!doctype html>
 <html lang="en">
@@ -75,7 +78,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
 }</code></pre>
 
       <p class="status"><span class="dot"></span> Service online</p>
-      <footer>Payments are sent to <code>${safePayTo}</code>. Testnet service; test USDC has no real-world value.</footer>
+      <footer>Payments are sent to <code>${safePayTo}</code>. ${paymentNotice}</footer>
     </main>
   </body>
 </html>`;
