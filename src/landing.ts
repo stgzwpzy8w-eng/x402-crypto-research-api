@@ -4,6 +4,13 @@ type LandingConfig = {
   payTo: string;
 };
 
+type ResearchResult = {
+  topic: string;
+  report: string;
+  sources: Array<{ title: string; url: string }>;
+  researchedAt: string;
+};
+
 const escapeHtml = (value: string) =>
   value.replace(
     /[&<>"']/g,
@@ -65,6 +72,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .demo-form { display: flex; gap: 10px; margin: 20px 0; }
       .demo-input { flex: 1; min-width: 0; padding: 13px 14px; border: 1px solid #2b694a; border-radius: 10px; background: #07110d; color: #e8fff4; font: inherit; }
       .demo-input:focus { outline: 2px solid #52ed9b; outline-offset: 2px; }
+      .purchase { margin: 48px 0; padding: 26px; border: 1px solid #725b24; border-radius: 18px; background: #17150e; }
       @media (max-width: 620px) { .demo-form { flex-direction: column; } }
       .links { display: flex; flex-wrap: wrap; gap: 18px; padding: 0; list-style: none; }
       .warning { padding: 16px 18px; border: 1px solid #725b24; border-radius: 12px; background: #211b0d; color: #ffe3a0; }
@@ -125,6 +133,17 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
 
       <p class="muted">Building an agent? Open the <a href="/demo">raw JSON demo response</a> instead.</p>
 
+      <section class="purchase" id="buy">
+        <div class="eyebrow">Live paid research</div>
+        <h2>Buy a current report</h2>
+        <p>Enter your topic, continue to the secure x402 payment screen, and approve ${safePrice} USDC in your wallet. The finished report opens in this browser.</p>
+        <form class="demo-form" action="/buy" method="get">
+          <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required placeholder="What should the API research?" aria-label="Paid research topic" />
+          <button class="button" type="submit">Continue to payment</button>
+        </form>
+        <p class="muted">Introductory price for the first three external buyers. Payment uses real USDC on Base mainnet.</p>
+      </section>
+
       <h2 id="agent-quickstart">Agent quickstart</h2>
       <p>Any Node.js agent can use an x402-compatible fetch client. The client handles the payment challenge and retries the request automatically.</p>
       <pre><code>npm install @x402/fetch @x402/evm viem
@@ -184,6 +203,41 @@ API_URL=https://x402-crypto-research-api-production.up.railway.app/research</cod
         previewTopic.scrollIntoView({ behavior: "smooth", block: "center" });
       });
     </script>
+  </body>
+</html>`;
+};
+
+export const renderResearchResultPage = (result: ResearchResult) => {
+  const sources = result.sources
+    .map(({ title, url }) => `<li><a href="${escapeHtml(url)}" rel="noreferrer">${escapeHtml(title)}</a></li>`)
+    .join("");
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research report | x402 Crypto Research API</title>
+    <style>
+      :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+      body { margin: 0; background: #07110d; color: #e8fff4; }
+      main { width: min(820px, calc(100% - 32px)); margin: 0 auto; padding: 56px 0; }
+      a { color: #73f7b1; } h1 { line-height: 1.15; } p { line-height: 1.65; }
+      .eyebrow { color: #73f7b1; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+      .report { white-space: pre-wrap; padding: 24px; border: 1px solid #2b694a; border-radius: 16px; background: #0c1b14; line-height: 1.65; }
+      .meta { color: #77a88f; } li { margin: 10px 0; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">Payment settled · report ready</div>
+      <h1>${escapeHtml(result.topic)}</h1>
+      <div class="report">${escapeHtml(result.report)}</div>
+      <h2>Sources</h2>
+      <ul>${sources}</ul>
+      <p class="meta">Researched at ${escapeHtml(result.researchedAt)}</p>
+      <p><a href="/">← Research another topic</a></p>
+    </main>
   </body>
 </html>`;
 };
