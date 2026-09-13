@@ -3,6 +3,8 @@ import { createCdpFacilitatorClient } from "@coinbase/cdp-sdk/x402";
 import { HTTPFacilitatorClient } from "@x402/core/server";
 import { ExactEvmScheme } from "@x402/evm/exact/server";
 import { paymentMiddleware, x402ResourceServer } from "@x402/express";
+import { createPaywall } from "@x402/paywall";
+import { evmPaywall } from "@x402/paywall/evm";
 import {
   bazaarResourceServerExtension,
   declareDiscoveryExtension,
@@ -26,6 +28,13 @@ const facilitator = config.facilitatorProvider === "cdp"
 const resourceServer = new x402ResourceServer(facilitator)
   .register(config.network, new ExactEvmScheme())
   .registerExtension(bazaarResourceServerExtension);
+const browserPaywall = createPaywall()
+  .withNetwork(evmPaywall)
+  .withConfig({
+    appName: "x402 Crypto Research API",
+    testnet: config.network !== "eip155:8453",
+  })
+  .build();
 
 const app = express();
 app.set("trust proxy", 1);
@@ -104,6 +113,7 @@ app.use(
       appName: "x402 Crypto Research API",
       testnet: config.network !== "eip155:8453",
     },
+    browserPaywall,
   ),
 );
 
