@@ -42,6 +42,13 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 36px 0; }
       .card, pre { border: 1px solid #214634; background: #0c1b14; border-radius: 16px; }
       .card { padding: 20px; }
+      .report { margin: 28px 0; padding: 26px; border: 1px solid #2b694a; background: linear-gradient(145deg, #0e2118, #0a1711); border-radius: 18px; }
+      .report-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-bottom: 18px; border-bottom: 1px solid #214634; }
+      .report-title { margin: 4px 0 0; font-size: 1.35rem; }
+      .badge { align-self: flex-start; padding: 6px 10px; border-radius: 999px; color: #07110d; background: #73f7b1; font-size: .78rem; font-weight: 800; }
+      .finding { margin: 18px 0 0; padding-left: 18px; border-left: 2px solid #52ed9b; }
+      .finding strong { display: block; margin-bottom: 4px; color: #e8fff4; }
+      .muted { color: #77a88f; }
       .step { padding: 20px; border-left: 3px solid #52ed9b; }
       .label { color: #77a88f; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; }
       .value { margin-top: 8px; font-size: 1.05rem; overflow-wrap: anywhere; }
@@ -89,6 +96,23 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   "sources": [{ "title": "...", "url": "..." }],
   "researchedAt": "..."
 }</code></pre>
+
+      <h2>What a buyer receives</h2>
+      <p>A ready-to-use brief rather than a list of search results. This shortened example shows the structure; every live report is generated for the buyer's topic.</p>
+      <article class="report">
+        <div class="report-header">
+          <div>
+            <div class="label">Example research report</div>
+            <h3 class="report-title">What changed in the Base ecosystem this week?</h3>
+          </div>
+          <span class="badge">Sources included</span>
+        </div>
+        <p><strong>Short summary:</strong> Recent ecosystem activity is organized into the developments most relevant to builders, users, and agent operators.</p>
+        <div class="finding"><strong>1. Key ecosystem development</strong><span class="muted">What happened, why it matters, and the date it was reported.</span></div>
+        <div class="finding"><strong>2. Adoption or infrastructure signal</strong><span class="muted">A concise explanation backed by a direct source link.</span></div>
+        <div class="finding"><strong>3. Risks and uncertainty</strong><span class="muted">Clear separation between confirmed facts, reported claims, and inference.</span></div>
+        <p><strong>Sources:</strong> Direct links to the official announcements and other relevant primary material.</p>
+      </article>
 
       <h2>See a free preview</h2>
       <p>Open the <a href="/demo">static demo response</a> to inspect the response format without a wallet, payment, or API cost.</p>
