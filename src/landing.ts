@@ -82,6 +82,9 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   "researchedAt": "..."
 }</code></pre>
 
+      <h2>See a free preview</h2>
+      <p>Open the <a href="/demo">static demo response</a> to inspect the response format without a wallet, payment, or API cost.</p>
+
       <h2>Buy one report</h2>
       <p>The payment is signed locally by the buyer client. This website never asks for a private key.</p>
       <div class="grid">
