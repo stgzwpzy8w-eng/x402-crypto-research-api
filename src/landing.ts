@@ -61,6 +61,11 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 8px; }
       .button { display: inline-block; padding: 12px 16px; border: 1px solid #52ed9b; border-radius: 10px; color: #07110d; background: #73f7b1; font-weight: 750; text-decoration: none; }
       .button.secondary { color: #bdfbd9; background: transparent; border-color: #2b694a; }
+      button.button { cursor: pointer; font: inherit; }
+      .demo-form { display: flex; gap: 10px; margin: 20px 0; }
+      .demo-input { flex: 1; min-width: 0; padding: 13px 14px; border: 1px solid #2b694a; border-radius: 10px; background: #07110d; color: #e8fff4; font: inherit; }
+      .demo-input:focus { outline: 2px solid #52ed9b; outline-offset: 2px; }
+      @media (max-width: 620px) { .demo-form { flex-direction: column; } }
       .links { display: flex; flex-wrap: wrap; gap: 18px; padding: 0; list-style: none; }
       .warning { padding: 16px 18px; border: 1px solid #725b24; border-radius: 12px; background: #211b0d; color: #ffe3a0; }
       .status { display: inline-flex; align-items: center; gap: 8px; color: #a8c7b8; }
@@ -74,7 +79,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       <h1>Current crypto research for humans and agents.</h1>
       <p class="lead">Send one topic to the API. x402 handles payment before a sourced, up-to-date research report is generated.</p>
       <div class="actions">
-        <a class="button" href="/demo">View free demo</a>
+        <a class="button" href="#free-demo">Try free preview</a>
         <a class="button secondary" href="#agent-quickstart">Agent quickstart</a>
       </div>
 
@@ -84,7 +89,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
         <div class="card"><div class="label">Network</div><div class="value"><code>${safeNetwork}</code></div></div>
       </div>
 
-      <h2>Request body</h2>
+      <h2>Example request body <span class="muted">(for API clients)</span></h2>
       <pre><code>{
   "topic": "What changed in the Solana ecosystem this week?"
 }</code></pre>
@@ -97,13 +102,17 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   "researchedAt": "..."
 }</code></pre>
 
-      <h2>What a buyer receives</h2>
-      <p>A ready-to-use brief rather than a list of search results. This shortened example shows the structure; every live report is generated for the buyer's topic.</p>
+      <h2 id="free-demo">Try the free preview</h2>
+      <p>Enter a topic to preview the report format. This free preview is illustrative and does not perform live research or charge a wallet.</p>
+      <form class="demo-form" id="demo-form">
+        <input class="demo-input" id="demo-topic" name="topic" type="text" minlength="3" maxlength="500" required value="What changed in the Base ecosystem this week?" aria-label="Research topic" />
+        <button class="button" type="submit">Generate preview</button>
+      </form>
       <article class="report">
         <div class="report-header">
           <div>
-            <div class="label">Example research report</div>
-            <h3 class="report-title">What changed in the Base ecosystem this week?</h3>
+            <div class="label">Free static preview</div>
+            <h3 class="report-title" id="preview-topic">What changed in the Base ecosystem this week?</h3>
           </div>
           <span class="badge">Sources included</span>
         </div>
@@ -114,8 +123,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
         <p><strong>Sources:</strong> Direct links to the official announcements and other relevant primary material.</p>
       </article>
 
-      <h2>See a free preview</h2>
-      <p>Open the <a href="/demo">static demo response</a> to inspect the response format without a wallet, payment, or API cost.</p>
+      <p class="muted">Building an agent? Open the <a href="/demo">raw JSON demo response</a> instead.</p>
 
       <h2 id="agent-quickstart">Agent quickstart</h2>
       <p>Any Node.js agent can use an x402-compatible fetch client. The client handles the payment challenge and retries the request automatically.</p>
@@ -166,6 +174,16 @@ API_URL=https://x402-crypto-research-api-production.up.railway.app/research</cod
       <p class="status"><span class="dot"></span> Service online</p>
       <footer>Payments are sent to <code>${safePayTo}</code>. ${paymentNotice}</footer>
     </main>
+    <script>
+      const demoForm = document.getElementById("demo-form");
+      const demoTopic = document.getElementById("demo-topic");
+      const previewTopic = document.getElementById("preview-topic");
+      demoForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        previewTopic.textContent = demoTopic.value.trim();
+        previewTopic.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    </script>
   </body>
 </html>`;
 };
