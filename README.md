@@ -1,0 +1,128 @@
+# x402 Crypto Research API
+
+Minimal TypeScript-MVP med en enda betald endpoint:
+
+```http
+POST /research
+Content-Type: application/json
+
+{"topic":"What changed in the Solana ecosystem this week?"}
+```
+
+Endpointen kräver en `exact`-betalning i test-USDC via x402 innan OpenAI gör en aktuell webbresearch och returnerar rapporten. Standardnätet är Base Sepolia, så testflödet använder inga riktiga pengar.
+
+## Flödet
+
+1. Klienten skickar `POST /research`.
+2. Servern svarar `402 Payment Required` med betalningskravet.
+3. x402-klienten signerar en USDC-betalning och försöker igen automatiskt.
+4. Facilitatorn verifierar och avvecklar betalningen.
+5. Först därefter körs researchen och JSON-svaret returneras.
+
+## Krav
+
+- Node.js 22+
+- pnpm
+- En EVM-adress som tar emot test-USDC
+- För det betalda testet: en separat test-wallet med Base Sepolia USDC
+
+Använd aldrig en wallet med riktiga tillgångar i den lokala testkonfigurationen.
+
+## Installation
+
+```powershell
+pnpm install
+```
+
+Kopiera värdena du behöver från `.env.example` till `.env.local`. OpenAI-nyckeln finns redan i `.env.local` om den skapades via Codex-flödet. Lägg minst till:
+
+```dotenv
+PAY_TO=0xDIN_MOTTAGARADRESS
+```
+
+Standardinställningarna är:
+
+```dotenv
+OPENAI_MODEL=gpt-5.4-mini
+X402_PRICE=$0.08
+X402_NETWORK=eip155:84532
+X402_FACILITATOR_URL=https://x402.org/facilitator
+PORT=4021
+```
+
+## Kör servern
+
+```powershell
+pnpm start
+```
+
+`pnpm dev` finns också för automatisk omstart under utveckling.
+
+## Kontrollera 402-svaret utan betalning
+
+I ett andra terminalfönster:
+
+```powershell
+curl.exe -i -X POST http://localhost:4021/research `
+  -H "Content-Type: application/json" `
+  -d '{"topic":"What changed in the Solana ecosystem this week?"}'
+```
+
+Du ska få HTTP-status `402` och ett `PAYMENT-REQUIRED`-huvud. Ingen OpenAI-research körs i detta steg.
+
+## Betalt end-to-end-test
+
+1. Skapa en separat test-wallet.
+2. Sätt `EVM_PRIVATE_KEY` i `.env.local` till test-walletens privata nyckel.
+3. Fyll test-walletens publika adress med Base Sepolia USDC via en faucet.
+4. Kör:
+
+```powershell
+pnpm client -- "What changed in the Solana ecosystem this week?"
+```
+
+Klienten hanterar `402`-utmaningen, betalar `$0.08` test-USDC och skriver sedan ut researchsvaret.
+
+## Tester
+
+```powershell
+pnpm test
+pnpm typecheck
+```
+
+## Svarsexempel
+
+```json
+{
+  "topic": "What changed in the Solana ecosystem this week?",
+  "report": "...",
+  "sources": [
+    { "title": "Source title", "url": "https://example.com/article" }
+  ],
+  "researchedAt": "2026-09-13T12:00:00.000Z"
+}
+```
+
+## Betalningssäkerhet
+
+Den låsta versionen av x402 Express verifierar först betalningsgodkännandet och väntar med att avveckla betalningen tills endpointen har svarat framgångsrikt. Om researchen svarar med `4xx` eller `5xx` avbryts betalningen och klienten skriver `Payment was not settled.` Ett automatiskt test skyddar detta beteende.
+
+## Kostnadsmätning
+
+Efter varje lyckad rapport skriver servern en rad som börjar med `[research-cost]`. Den visar input-token, cachelagrade input-token, output-token, antal webbsökningar och uppskattad kostnad i USD. Ämnet och API-nyckeln loggas inte.
+
+Prisuppskattningen gäller standardpriserna för `gpt-5.4-mini`: $0,75 per miljon input-token, $0,075 per miljon cachelagrade input-token, $4,50 per miljon output-token och $0,01 per webbsökning. Kontrollera alltid aktuella priser före produktion.
+
+Betapriset är `$0.08` USDC. Ett uppmätt test kostade uppskattningsvis `$0.031940`, vilket motsvarar cirka 60 % bruttomarginal före hosting och andra kostnader. Mät fler rapporter innan priset används på mainnet.
+
+## MVP-begränsningar
+
+- Lägg till idempotens, jobbspårning, återförsök och en tydlig återbetalningspolicy före produktion.
+- Ingen cache, rate limiting eller databas.
+- Base Sepolia och den publika test-facilitatorn är endast avsedda för utveckling. Byt konfiguration och gör en separat säkerhetsgranskning före mainnet.
+
+## Dokumentation
+
+- [x402: Quickstart for Sellers](https://docs.x402.org/getting-started/quickstart-for-sellers)
+- [x402: Quickstart for Buyers](https://docs.x402.org/getting-started/quickstart-for-buyers)
+- [OpenAI Responses API](https://developers.openai.com/api/reference/typescript/resources/beta/subresources/responses/methods/create)
