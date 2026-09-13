@@ -26,6 +26,7 @@ const resourceServer = new x402ResourceServer(facilitator)
   .registerExtension(bazaarResourceServerExtension);
 
 const app = express();
+app.set("trust proxy", 1);
 app.use(express.json({ limit: "16kb" }));
 app.get("/", (_req: Request, res: Response) => {
   res.type("html").send(renderLandingPage(config));
