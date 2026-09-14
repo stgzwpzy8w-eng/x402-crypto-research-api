@@ -58,7 +58,7 @@ app.get("/demo", (_req: Request, res: Response) => {
   res.json(demoResearchResult);
 });
 app.get("/examples/base-launches-september-2026.md", (_req: Request, res: Response) => {
-  const reportUrl = new URL("../reports/anakin-base-launches-september-2026.md", import.meta.url);
+  const reportUrl = new URL("../anakin-base-launches-september-2026.md", import.meta.url);
   res.type("text/markdown").send(readFileSync(reportUrl, "utf8"));
 });
 app.get("/openapi.json", (_req: Request, res: Response) => {
