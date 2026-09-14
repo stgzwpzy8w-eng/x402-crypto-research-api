@@ -58,11 +58,11 @@ app.get("/demo", (_req: Request, res: Response) => {
   res.json(demoResearchResult);
 });
 app.get("/examples/base-launches-september-2026.md", (_req: Request, res: Response) => {
-  const reportUrl = new URL("../reports/anakin-base-launches-september-2026.md", import.meta.url);
+  const reportUrl = new URL("../anakin-base-launches-september-2026.md", import.meta.url);
   res.type("text/markdown").send(readFileSync(reportUrl, "utf8"));
 });
 app.get("/examples/base-launch-intelligence-september-2026.pdf", (_req: Request, res: Response) => {
-  const reportUrl = new URL("../output/pdf/base-launch-intelligence-september-2026.pdf", import.meta.url);
+  const reportUrl = new URL("../base-launch-intelligence-september-2026.pdf", import.meta.url);
   res.type("application/pdf").send(readFileSync(reportUrl));
 });
 app.get("/openapi.json", (_req: Request, res: Response) => {
