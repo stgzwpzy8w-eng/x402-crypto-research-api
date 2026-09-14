@@ -21,7 +21,7 @@ import {
 import { renderLandingPage, renderResearchResultPage } from "./landing.js";
 import { createResearcher } from "./research.js";
 import { normalizeTopic } from "./topic.js";
-import { res.locals.researchCompleted = true;, funnelSource, logFunnelEvent, trackPaidRequest } from "./funnel.js";
+import { funnelSource, logFunnelEvent, trackPaidRequest } from "./funnel.js";
 
 const config = loadServerConfig();
 const research = createResearcher(config.openAiApiKey, config.openAiModel);
@@ -136,7 +136,7 @@ app.get("/buy", async (req: Request, res: Response, next: NextFunction) => {
     const topic = normalizeTopic(req.query.topic);
     const { result, usage } = await research(topic);
     console.log(formatResearchCost(config.openAiModel, usage));
-    logFunnelEvent("purchase_completed", res.locals.researchCompleted = true;(res));
+    res.locals.researchCompleted = true;
     res.type("html").send(renderResearchResultPage(result));
   } catch (error) {
     next(error);
@@ -148,7 +148,7 @@ app.post("/research", async (req: Request, res: Response, next: NextFunction) =>
     const topic = normalizeTopic(req.body?.topic);
     const { result, usage } = await research(topic);
     console.log(formatResearchCost(config.openAiModel, usage));
-    logFunnelEvent("purchase_completed", res.locals.researchCompleted = true;(res));
+    res.locals.researchCompleted = true;
     res.json(result);
   } catch (error) {
     next(error);
