@@ -13,6 +13,10 @@ Endpointen kräver en `exact`-betalning via x402 innan OpenAI gör en aktuell we
 
 Den driftsatta tjänsten finns på [x402-crypto-research-api-production.up.railway.app](https://x402-crypto-research-api-production.up.railway.app). Startsidan visar aktuell pris- och nätverksinformation, och `GET /health` kan användas som enkel statuskontroll.
 
+`GET /demo` ger ett statiskt exempel på svarsformatet utan wallet, betalning eller OpenAI-kostnad. Den gör ingen aktuell research; riktiga rapporter köps via `POST /research`.
+
+`GET /openapi.json` publicerar en maskinläsbar OpenAPI-beskrivning, `GET /.well-known/x402` publicerar ett fristående discovery-manifest, `GET /skill.md` ger köpande agenter kompletta anropsinstruktioner och `GET /llms.txt` ger en kort integrationsguide.
+
 `POST /research` deklarerar Bazaar-metadata enligt x402 v2 så att kompatibla facilitatorer och klienter kan läsa hur endpointen anropas och vilket svar den ger. Katalogisering beror på facilitatorns stöd och sker normalt i samband med en genomförd betalning.
 
 ## Köp en rapport från den publicerade tjänsten
