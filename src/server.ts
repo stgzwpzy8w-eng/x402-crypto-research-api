@@ -22,6 +22,7 @@ import { renderLandingPage, renderResearchResultPage } from "./landing.js";
 import { createResearcher } from "./research.js";
 import { normalizeTopic } from "./topic.js";
 import { funnelSource, logFunnelEvent, trackPaidRequest } from "./funnel.js";
+import { createMcpHandler, createMcpServerCard } from "./mcp.js";
 
 const config = loadServerConfig();
 const research = createResearcher(config.openAiApiKey, config.openAiModel);
@@ -66,6 +67,13 @@ app.get("/skill.md", (_req: Request, res: Response) => {
 });
 app.get("/llms.txt", (_req: Request, res: Response) => {
   res.type("text/plain").send(createLlmsText(config));
+});
+app.get("/.well-known/mcp/server-card.json", (_req: Request, res: Response) => {
+  res.json(createMcpServerCard(config));
+});
+app.post("/mcp", createMcpHandler(config));
+app.get("/mcp", (_req: Request, res: Response) => {
+  res.status(405).set("Allow", "POST").json({ error: "Use POST with MCP Streamable HTTP" });
 });
 app.use(trackPaidRequest);
 app.use(
