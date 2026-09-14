@@ -39,16 +39,12 @@ export const trackPaidRequest = (req: Request, res: Response, next: NextFunction
   res.once("finish", () => {
     if (res.statusCode === 402) {
       logFunnelEvent("payment_required", { requestId, flow, source });
+    } else if (res.statusCode >= 200 && res.statusCode < 300 && res.locals.researchCompleted === true) {
+      logFunnelEvent("purchase_completed", { requestId, flow, source });
     }
   });
 
   next();
 };
-
-export const funnelContext = (res: Response) => ({
-  requestId: String(res.locals.funnelRequestId ?? "unknown"),
-  flow: String(res.locals.funnelFlow ?? "unknown"),
-  source: String(res.locals.funnelSource ?? "direct"),
-});
 
 export const funnelSource = cleanSource;
