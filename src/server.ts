@@ -21,6 +21,7 @@ import {
 import { renderLandingPage, renderResearchResultPage } from "./landing.js";
 import { createResearcher } from "./research.js";
 import { normalizeTopic } from "./topic.js";
+import { funnelContext, funnelSource, logFunnelEvent, trackPaidRequest } from "./funnel.js";
 
 const config = loadServerConfig();
 const research = createResearcher(config.openAiApiKey, config.openAiModel);
@@ -44,7 +45,8 @@ const browserPaywall = createPaywall()
 const app = express();
 app.set("trust proxy", 1);
 app.use(express.json({ limit: "16kb" }));
-app.get("/", (_req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
+  logFunnelEvent("landing_view", { source: funnelSource(req.query.ref) });
   res.type("html").send(renderLandingPage(config));
 });
 app.get("/health", (_req: Request, res: Response) => {
@@ -65,6 +67,7 @@ app.get("/skill.md", (_req: Request, res: Response) => {
 app.get("/llms.txt", (_req: Request, res: Response) => {
   res.type("text/plain").send(createLlmsText(config));
 });
+app.use(trackPaidRequest);
 app.use(
   paymentMiddleware(
     {
@@ -133,6 +136,7 @@ app.get("/buy", async (req: Request, res: Response, next: NextFunction) => {
     const topic = normalizeTopic(req.query.topic);
     const { result, usage } = await research(topic);
     console.log(formatResearchCost(config.openAiModel, usage));
+    logFunnelEvent("purchase_completed", funnelContext(res));
     res.type("html").send(renderResearchResultPage(result));
   } catch (error) {
     next(error);
@@ -144,6 +148,7 @@ app.post("/research", async (req: Request, res: Response, next: NextFunction) =>
     const topic = normalizeTopic(req.body?.topic);
     const { result, usage } = await research(topic);
     console.log(formatResearchCost(config.openAiModel, usage));
+    logFunnelEvent("purchase_completed", funnelContext(res));
     res.json(result);
   } catch (error) {
     next(error);
