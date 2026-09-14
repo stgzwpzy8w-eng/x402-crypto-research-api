@@ -1,4 +1,5 @@
 import express, { type NextFunction, type Request, type Response } from "express";
+import { readFileSync } from "node:fs";
 import { createCdpFacilitatorClient } from "@coinbase/cdp-sdk/x402";
 import { HTTPFacilitatorClient } from "@x402/core/server";
 import { ExactEvmScheme } from "@x402/evm/exact/server";
@@ -56,6 +57,10 @@ app.get("/health", (_req: Request, res: Response) => {
 app.get("/demo", (_req: Request, res: Response) => {
   res.json(demoResearchResult);
 });
+app.get("/examples/base-launches-september-2026.md", (_req: Request, res: Response) => {
+  const reportUrl = new URL("../reports/anakin-base-launches-september-2026.md", import.meta.url);
+  res.type("text/markdown").send(readFileSync(reportUrl, "utf8"));
+});
 app.get("/openapi.json", (_req: Request, res: Response) => {
   res.json(createOpenApiDocument(config));
 });
@@ -86,7 +91,7 @@ app.use(
           network: config.network,
           payTo: config.payTo,
         },
-        description: "Current crypto research report in the browser",
+        description: "Base launch intelligence or current crypto research report in the browser",
         mimeType: "text/html",
       },
       "POST /research": {
@@ -96,19 +101,19 @@ app.use(
           network: config.network,
           payTo: config.payTo,
         },
-        description: "Current crypto research report for one topic",
+        description: "Base launch intelligence and current crypto research for one topic",
         mimeType: "application/json",
         serviceName: "x402 Crypto Research API",
-        tags: ["crypto", "research", "web-search", "ai"],
+        tags: ["base", "launch-intelligence", "crypto", "due-diligence", "research", "ai"],
         extensions: declareDiscoveryExtension({
           input: {
-            topic: "What changed in the Solana ecosystem this week?",
+            topic: "Which Base projects launched this month and show credible traction?",
           },
           inputSchema: {
             properties: {
               topic: {
                 type: "string",
-                description: "Crypto research question or topic",
+                description: "Base launch, token due-diligence, or crypto intelligence question",
                 minLength: 3,
                 maxLength: 500,
               },
@@ -119,8 +124,8 @@ app.use(
           bodyType: "json",
           output: {
             example: {
-              topic: "What changed in the Solana ecosystem this week?",
-              report: "A concise, sourced research report.",
+              topic: "Which Base projects launched this month and show credible traction?",
+              report: "A sourced intelligence report with evidence, risks, exclusions, and a ranked conclusion.",
               sources: [
                 { title: "Source title", url: "https://example.com/article" },
               ],

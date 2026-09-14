@@ -22,10 +22,23 @@ export function createResearcher(apiKey: string, model: string) {
     const response = await client.responses.create({
       model,
       store: false,
-      max_output_tokens: 1200,
+      max_output_tokens: 1800,
       tools: [{ type: "web_search_preview", search_context_size: "low" }],
-      instructions:
-        "You are a careful crypto research analyst. Search the web for current, relevant information. Return a concise report with: a short summary, 3-6 key findings, important risks or uncertainty, and source citations. Do not give personalized financial advice. Clearly distinguish facts from inference.",
+      instructions: `You are a careful crypto intelligence analyst. Produce decision-useful analysis rather than a generic search summary.
+
+For every request:
+- define the scope and the metric being measured;
+- verify important claims with primary or reputable sources when possible;
+- distinguish confirmed facts, reported claims, and your own inference;
+- include contract addresses and dates when they are relevant;
+- compare candidates instead of merely listing them;
+- flag weak evidence, suspicious activity, concentration, liquidity, counterfeit contracts, and other material risks;
+- explain notable exclusions and why they did not qualify;
+- finish with a ranked conclusion or a clear answer to the question.
+
+For Base launch, token, or protocol research, use this structure when applicable: scope and methodology; screened candidates; verified launch evidence; volume and liquidity; holder or market concentration; suspicious-activity and contract-risk flags; exclusions; ranked conclusion.
+
+Return a concise but substantive report with source citations. Do not give personalized financial advice and never imply that trading volume alone proves quality or legitimacy.`,
       input: `Research topic: ${topic}`,
     });
 

@@ -37,7 +37,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>x402 Crypto Research API</title>
+    <title>Base Launch Intelligence · x402</title>
     <style>
       :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
       * { box-sizing: border-box; }
@@ -96,29 +96,29 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   </head>
   <body>
     <main>
-      <div class="eyebrow">Pay per request with USDC</div>
-      <h1>Current crypto research for humans and agents.</h1>
-      <p class="lead">Ask about an ecosystem, protocol, token, market, or security event. After payment, the API researches your exact question and returns a newly generated report with sources.</p>
+      <div class="eyebrow">Base Launch Intelligence · Pay with USDC</div>
+      <h1>Investigate new Base launches before the crowd does.</h1>
+      <p class="lead">Give us a Base token, protocol, or launch question. Get fresh research covering verified contracts, launch evidence, volume and liquidity, concentration, suspicious activity, exclusions, and a ranked conclusion.</p>
 
       <section class="choice-grid" aria-label="Free preview and paid research comparison">
         <div class="choice preview">
           <div class="label">Free preview</div>
-          <h2>See the format</h2>
-          <div class="not-live">Static example — no new research</div>
+          <h2>Read a real investigation</h2>
+          <div class="not-live">Full Base launch report — free</div>
           <ul>
             <li>No wallet or payment</li>
-            <li>Shows how a report is structured</li>
-            <li>Does not answer your question</li>
+            <li>See the evidence and methodology</li>
+            <li>Judge the depth before buying</li>
           </ul>
         </div>
         <div class="choice live">
           <div class="label">Paid report</div>
-          <h2>Research your question now</h2>
+          <h2>Investigate your Base question</h2>
           <div><strong>${safePrice} USDC on Base</strong></div>
           <ul>
             <li>Fresh web research for your topic</li>
-            <li>Summary, key findings, and risks</li>
-            <li>Direct source links and timestamp</li>
+            <li>Contracts, evidence, risks, and exclusions</li>
+            <li>Ranked conclusion with source links</li>
           </ul>
         </div>
       </section>
@@ -127,13 +127,13 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
         <div class="purchase-top">
           <div>
             <div class="eyebrow">Live paid research</div>
-            <h2>Get a current research report</h2>
+            <h2>Analyze a Base token or find new launches</h2>
           </div>
           <div class="price-pill">${safePrice} USDC</div>
         </div>
-        <p>Type your real question below. The next screen shows the exact wallet charge before you approve it.</p>
+        <p>Ask for token due diligence, launch screening, or ecosystem intelligence. The next screen shows the exact wallet charge before you approve it.</p>
         <form class="demo-form" action="/buy" method="get">
-          <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required placeholder="Example: What changed on Base this week?" aria-label="Paid research topic" />
+          <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required placeholder="Example: Which Base projects launched this month and show real traction?" aria-label="Paid research topic" />
           <button class="button" type="submit">Continue to secure payment</button>
         </form>
         <p class="muted">Introductory price for the first three external buyers · real USDC on Base · report opens here after payment.</p>
@@ -152,7 +152,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
 
       <h2>Example request body <span class="muted">(for API clients)</span></h2>
       <pre><code>{
-  "topic": "What changed in the Solana ecosystem this week?"
+  "topic": "Which Base projects launched this month and show credible traction?"
 }</code></pre>
 
       <h2>Response</h2>
@@ -163,28 +163,23 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   "researchedAt": "..."
 }</code></pre>
 
-      <h2 id="free-demo">Complete example report</h2>
-      <p class="warning"><strong>Previously generated example.</strong> This report was researched on September 13, 2026. It shows the real level of detail and source format, but it is not being refreshed on this page.</p>
+      <h2 id="free-demo">Real Base launch investigation</h2>
+      <p class="warning"><strong>Previously generated example.</strong> Researched on September 14, 2026. It demonstrates the evidence standards and analysis buyers receive; it is not refreshed on this page.</p>
       <article class="report">
         <div class="report-header">
           <div>
-            <div class="label">Real report output · September 13, 2026</div>
-            <h3 class="report-title">What changed in the Solana ecosystem this week?</h3>
+            <div class="label">Base Launch Intelligence · September 14, 2026</div>
+            <h3 class="report-title">Which new Base projects exceeded $10,000 in September DEX volume?</h3>
           </div>
-          <span class="badge">3 sources</span>
+          <span class="badge">107-line report</span>
         </div>
-        <p><strong>Short summary:</strong> Solana's latest activity centered on stablecoin payments, tokenized real-world assets, and network performance. Confirmed ecosystem updates included new payment infrastructure from Western Union and MoneyGram, continued growth in tokenized assets, and higher transaction throughput.</p>
-        <div class="finding"><strong>1. Payments infrastructure expanded</strong><span class="muted">Western Union introduced a Visa card backed by USDPT issued on Solana, while MoneyGram launched an API connecting digital-asset ramps with its retail cash network.</span></div>
-        <div class="finding"><strong>2. Tokenized assets continued growing</strong><span class="muted">Solana's ecosystem roundup reported more than $4B in real-world asset value, while tokenized-stock products passed new asset and trading-volume milestones.</span></div>
-        <div class="finding"><strong>3. Network activity and speed improved</strong><span class="muted">The network reported a record day for non-vote transactions and shorter target slot times. Separate engineering work continued toward lower latency and larger transactions.</span></div>
-        <div class="finding"><strong>Risks and uncertainty</strong><span class="muted">Some weekly figures came from third-party research and should be treated as reported data. Several performance items described ongoing engineering work rather than changes already deployed to mainnet.</span></div>
-        <p><strong>Sources</strong></p>
-        <ul>
-          <li><a href="https://solana.com/news/solana-ecosystem-roundup-august-2026" rel="noreferrer">Solana Ecosystem Roundup: August 2026</a></li>
-          <li><a href="https://soldatalab.com/articles/solana-weekly-news-review-august-31-september-6-2026.html" rel="noreferrer">SOL Weekly News Review: August 31–September 6, 2026</a></li>
-          <li><a href="https://solana.com/news" rel="noreferrer">Solana ecosystem and developer updates</a></li>
-        </ul>
-        <p class="muted"><strong>Researched at:</strong> September 13, 2026. Historical example; claims may no longer be current.</p>
+        <p><strong>Conclusion:</strong> SPCXc was the strongest verified match because its issuer, launch date, contract identity, and multi-million-dollar volume were independently supportable. LAPTOP cleared the volume threshold but carried extreme counterfeit and collapse risk. BitTorture qualified only as a high-risk provisional candidate.</p>
+        <div class="finding"><strong>Verified launch evidence</strong><span class="muted">The report separates an issuer-confirmed launch from pools whose age merely suggests a recent deployment.</span></div>
+        <div class="finding"><strong>Market quality, not just volume</strong><span class="muted">Volume is evaluated alongside liquidity, price behavior, concentration, and evidence of organic demand.</span></div>
+        <div class="finding"><strong>Suspicious activity and exclusions</strong><span class="muted">Counterfeit contracts, unverifiable affiliations, and projects without adequate launch evidence are flagged or excluded.</span></div>
+        <div class="finding"><strong>Ranked output</strong><span class="muted">Candidates are ranked by evidence quality and risk rather than presented as an unfiltered Dexscreener list.</span></div>
+        <p><a class="button" href="/examples/base-launches-september-2026.md">Read the complete report</a></p>
+        <p class="muted"><strong>Historical example:</strong> claims and market figures may no longer be current.</p>
       </article>
 
       <section class="purchase">
@@ -197,7 +192,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
         </div>
         <form class="demo-form" action="/buy" method="get">
           <input type="hidden" name="ref" value="sample" />
-          <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required value="What changed in the Solana ecosystem this week?" aria-label="Sample report follow-up topic" />
+          <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required value="Which Base projects launched this month and show credible traction?" aria-label="Sample report follow-up topic" />
           <button class="button" type="submit">Research this topic now</button>
         </form>
       </section>
@@ -223,7 +218,7 @@ const response = await paidFetch(
   {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ topic: "What changed on Base this week?" })
+    body: JSON.stringify({ topic: "Analyze the launch quality and risks of this Base token: 0x..." })
   }
 );
 const report = await response.json();</code></pre>
