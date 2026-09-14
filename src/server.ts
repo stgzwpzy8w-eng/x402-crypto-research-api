@@ -58,8 +58,12 @@ app.get("/demo", (_req: Request, res: Response) => {
   res.json(demoResearchResult);
 });
 app.get("/examples/base-launches-september-2026.md", (_req: Request, res: Response) => {
-  const reportUrl = new URL("../anakin-base-launches-september-2026.md", import.meta.url);
+  const reportUrl = new URL("../reports/anakin-base-launches-september-2026.md", import.meta.url);
   res.type("text/markdown").send(readFileSync(reportUrl, "utf8"));
+});
+app.get("/examples/base-launch-intelligence-september-2026.pdf", (_req: Request, res: Response) => {
+  const reportUrl = new URL("../output/pdf/base-launch-intelligence-september-2026.pdf", import.meta.url);
+  res.type("application/pdf").send(readFileSync(reportUrl));
 });
 app.get("/openapi.json", (_req: Request, res: Response) => {
   res.json(createOpenApiDocument(config));
@@ -103,7 +107,7 @@ app.use(
         },
         description: "Base launch intelligence and current crypto research for one topic",
         mimeType: "application/json",
-        serviceName: "x402 Crypto Research API",
+        serviceName: "Base Launch Intelligence",
         tags: ["base", "launch-intelligence", "crypto", "due-diligence", "research", "ai"],
         extensions: declareDiscoveryExtension({
           input: {

@@ -10,16 +10,16 @@ export function createOpenApiDocument(config: PublicApiConfig) {
   return {
     openapi: "3.1.0",
     info: {
-      title: "x402 Crypto Research API",
+      title: "Base Launch Intelligence API",
       version: "0.1.0",
-      description: `Current, sourced crypto research paid per request with x402. Price: ${config.price} USDC on ${config.network}.`,
+      description: `Base launch screening and token due diligence with verified evidence, market-quality analysis, risk flags, exclusions, and ranked conclusions. Paid per request with x402. Price: ${config.price} USDC on ${config.network}.`,
     },
     servers: [{ url: publicBaseUrl }],
     paths: {
       "/research": {
         post: {
           operationId: "researchCryptoTopic",
-          summary: "Generate a current crypto research report",
+          summary: "Generate Base launch intelligence or token due diligence",
           description: `Requires an x402 payment of ${config.price} USDC on ${config.network}.`,
           "x-payment-info": {
             price: config.price,
@@ -96,8 +96,8 @@ export function createOpenApiDocument(config: PublicApiConfig) {
 
 export function createX402Manifest(config: PublicApiConfig) {
   return {
-    name: "x402 Crypto Research API",
-    description: "Fresh, sourced crypto research for humans and AI agents.",
+    name: "Base Launch Intelligence API",
+    description: "Screen new Base launches and investigate Base tokens with evidence, market-quality analysis, risk flags, exclusions, and ranked conclusions.",
     version: "0.1.0",
     homepage: publicBaseUrl,
     skill: `${publicBaseUrl}/skill.md`,
@@ -108,7 +108,7 @@ export function createX402Manifest(config: PublicApiConfig) {
         method: "POST",
         type: "http",
         x402Version: 2,
-        description: "Generate a current crypto research report with source links.",
+        description: "Generate Base launch intelligence or token due diligence with source links.",
         accepts: [
           {
             scheme: "exact",
@@ -133,11 +133,11 @@ export function createX402Manifest(config: PublicApiConfig) {
 }
 
 export function createSkillText(config: PublicApiConfig): string {
-  return `# x402 Crypto Research API
+  return `# Base Launch Intelligence API
 
 ## Capability
 
-Generate a fresh, concise crypto research report with source links for a supplied topic.
+Find credible new Base launches or investigate a Base token. Reports add verified contracts and launch evidence, liquidity and concentration analysis, suspicious-activity flags, exclusions, a ranked conclusion, and source links.
 
 ## Paid operation
 
@@ -150,7 +150,7 @@ Generate a fresh, concise crypto research report with source links for a supplie
 ## Input
 
 \`\`\`json
-{"topic":"What changed in the Base ecosystem this week?"}
+{"topic":"Which Base projects launched this month and show credible traction?"}
 \`\`\`
 
 The topic must contain 3–500 characters.
@@ -169,9 +169,9 @@ JSON containing \`topic\`, \`report\`, \`sources\`, and \`researchedAt\`. Send t
 }
 
 export function createLlmsText(config: PublicApiConfig): string {
-  return `# x402 Crypto Research API
+  return `# Base Launch Intelligence API
 
-> Current, sourced crypto research for humans and AI agents, paid per request with x402.
+> Base launch screening and token due diligence for humans and AI agents, paid per request with x402.
 
 - API base: ${publicBaseUrl}
 - Paid endpoint: POST ${publicBaseUrl}/research
@@ -181,6 +181,6 @@ export function createLlmsText(config: PublicApiConfig): string {
 - OpenAPI specification: ${publicBaseUrl}/openapi.json
 - Source and client: https://github.com/stgzwpzy8w-eng/x402-crypto-research-api
 
-The paid endpoint returns topic, report, source links, and researchedAt. A compatible x402 client handles the HTTP 402 challenge and payment automatically. Use a dedicated low-balance wallet.
+Use it to find credible new Base launches, investigate a token, or compare Base projects. The paid endpoint returns evidence, market-quality analysis, risk flags, exclusions, a ranked conclusion, source links, and researchedAt. A compatible x402 client handles the HTTP 402 challenge and payment automatically. Use a dedicated low-balance wallet.
 `;
 }

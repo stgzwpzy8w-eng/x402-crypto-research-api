@@ -34,7 +34,11 @@ test("renders public API details and escapes environment values", () => {
   assert.match(html, /first three external buyers/);
   assert.match(html, /source links/);
   assert.match(html, /Suspicious activity and exclusions/);
-  assert.match(html, /Read the complete report/);
+  assert.match(html, /Open the polished PDF report/);
+  assert.match(html, /Read the source report/);
+  assert.match(html, /Find credible new Base launches/);
+  assert.match(html, /Investigate a Base token/);
+  assert.match(html, /Compare two Base projects/);
   assert.match(html, /Base Launch Intelligence/);
   assert.match(html, /verified contracts/);
   assert.match(html, /Historical example/);

@@ -83,6 +83,10 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .payment-ready ol { margin: 0; padding-left: 22px; color: #d7cba8; line-height: 1.7; }
       .payment-ready .wallet-link { display: inline-block; margin-top: 12px; }
       .path-label { margin-top: 22px; color: #ffe39a; font-weight: 800; }
+      .prompt-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 14px 0 18px; }
+      .prompt-grid form { margin: 0; }
+      .prompt-button { width: 100%; min-height: 92px; padding: 14px; border: 1px solid #315343; border-radius: 12px; background: #0b1812; color: #bdfbd9; font: inherit; font-weight: 700; line-height: 1.35; text-align: left; cursor: pointer; }
+      .prompt-button:hover, .prompt-button:focus { border-color: #73f7b1; background: #10241a; outline: none; }
       .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 26px 0; }
       .choice { padding: 20px; border-radius: 16px; }
       .choice.preview { border: 1px solid #315343; background: #0b1812; }
@@ -92,6 +96,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .not-live { color: #ffe3a0; font-weight: 750; }
       @media (max-width: 620px) { .demo-form { flex-direction: column; } }
       @media (max-width: 620px) { .choice-grid { grid-template-columns: 1fr; } }
+      @media (max-width: 720px) { .prompt-grid { grid-template-columns: 1fr; } }
       .links { display: flex; flex-wrap: wrap; gap: 18px; padding: 0; list-style: none; }
       .warning { padding: 16px 18px; border: 1px solid #725b24; border-radius: 12px; background: #211b0d; color: #ffe3a0; }
       .status { display: inline-flex; align-items: center; gap: 8px; color: #a8c7b8; }
@@ -147,6 +152,12 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
           <a class="wallet-link" href="https://www.coinbase.com/wallet/downloads" rel="noreferrer">I need a compatible wallet →</a>
         </div>
         <div class="path-label">For people with a wallet</div>
+        <p class="muted">Choose a ready-made investigation or write your own:</p>
+        <div class="prompt-grid" aria-label="Ready-made Base intelligence questions">
+          <form action="/buy" method="get"><input type="hidden" name="ref" value="prompt-launches" /><input type="hidden" name="topic" value="Which Base projects launched this month and show credible traction?" /><button class="prompt-button" type="submit">Find credible new Base launches →</button></form>
+          <form action="/buy" method="get"><input type="hidden" name="ref" value="prompt-token-risk" /><input type="hidden" name="topic" value="Analyze this Base token's contract, liquidity, holder concentration, suspicious activity, and key risks: 0x..." /><button class="prompt-button" type="submit">Investigate a Base token →</button></form>
+          <form action="/buy" method="get"><input type="hidden" name="ref" value="prompt-compare" /><input type="hidden" name="topic" value="Compare these Base projects by verified traction, liquidity quality, concentration, and risk: PROJECT A vs PROJECT B" /><button class="prompt-button" type="submit">Compare two Base projects →</button></form>
+        </div>
         <form class="demo-form" action="/buy" method="get">
           <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required placeholder="Example: Which Base projects launched this month and show real traction?" aria-label="Paid research topic" />
           <button class="button" type="submit">Continue — I have USDC on Base</button>
@@ -196,7 +207,10 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
         <div class="finding"><strong>Market quality, not just volume</strong><span class="muted">Volume is evaluated alongside liquidity, price behavior, concentration, and evidence of organic demand.</span></div>
         <div class="finding"><strong>Suspicious activity and exclusions</strong><span class="muted">Counterfeit contracts, unverifiable affiliations, and projects without adequate launch evidence are flagged or excluded.</span></div>
         <div class="finding"><strong>Ranked output</strong><span class="muted">Candidates are ranked by evidence quality and risk rather than presented as an unfiltered Dexscreener list.</span></div>
-        <p><a class="button" href="/examples/base-launches-september-2026.md">Read the complete report</a></p>
+        <div class="actions">
+          <a class="button" href="/examples/base-launch-intelligence-september-2026.pdf">Open the polished PDF report</a>
+          <a class="button secondary" href="/examples/base-launches-september-2026.md">Read the source report</a>
+        </div>
         <p class="muted"><strong>Historical example:</strong> claims and market figures may no longer be current.</p>
       </article>
 
