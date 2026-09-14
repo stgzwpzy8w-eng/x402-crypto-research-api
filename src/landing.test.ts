@@ -22,7 +22,11 @@ test("renders public API details and escapes environment values", () => {
   assert.match(html, /Base Launch Intelligence · September 14, 2026/);
   assert.match(html, /Full Base launch report — free/);
   assert.match(html, /Investigate your Base question/);
-  assert.match(html, /Continue to secure payment/);
+  assert.match(html, /Continue — I have USDC on Base/);
+  assert.match(html, /Before you continue/);
+  assert.match(html, /Coinbase Wallet/);
+  assert.match(html, /never asks for your recovery phrase or private key/);
+  assert.match(html, /For AI agents/);
   assert.match(html, /action="\/buy"/);
   assert.match(html, /name="ref" value="sample"/);
   assert.match(html, /Research this topic now/);

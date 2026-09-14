@@ -78,6 +78,11 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .price-pill { padding: 9px 12px; border-radius: 999px; background: #ffe39a; color: #241b05; font-weight: 850; white-space: nowrap; }
       .purchase .demo-form { margin-bottom: 12px; }
       .purchase .button { padding-inline: 22px; }
+      .payment-ready { margin: 18px 0; padding: 18px; border: 1px solid #725b24; border-radius: 14px; background: #171409; }
+      .payment-ready h3 { margin-bottom: 12px; }
+      .payment-ready ol { margin: 0; padding-left: 22px; color: #d7cba8; line-height: 1.7; }
+      .payment-ready .wallet-link { display: inline-block; margin-top: 12px; }
+      .path-label { margin-top: 22px; color: #ffe39a; font-weight: 800; }
       .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 26px 0; }
       .choice { padding: 20px; border-radius: 16px; }
       .choice.preview { border: 1px solid #315343; background: #0b1812; }
@@ -132,10 +137,23 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
           <div class="price-pill">${safePrice} USDC</div>
         </div>
         <p>Ask for token due diligence, launch screening, or ecosystem intelligence. The next screen shows the exact wallet charge before you approve it.</p>
+        <div class="payment-ready">
+          <h3>Before you continue</h3>
+          <ol>
+            <li>Open this page in a browser with <strong>Coinbase Wallet</strong> or another compatible injected EVM wallet.</li>
+            <li>Keep at least <strong>${safePrice} USDC on Base</strong> in that wallet.</li>
+            <li>On the payment screen: select your wallet, connect it, then approve the exact ${safePrice} USDC charge.</li>
+          </ol>
+          <a class="wallet-link" href="https://www.coinbase.com/wallet/downloads" rel="noreferrer">I need a compatible wallet →</a>
+        </div>
+        <div class="path-label">For people with a wallet</div>
         <form class="demo-form" action="/buy" method="get">
           <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required placeholder="Example: Which Base projects launched this month and show real traction?" aria-label="Paid research topic" />
-          <button class="button" type="submit">Continue to secure payment</button>
+          <button class="button" type="submit">Continue — I have USDC on Base</button>
         </form>
+        <p class="muted">You will review the charge before approval. This site never asks for your recovery phrase or private key.</p>
+        <p class="path-label">For AI agents</p>
+        <p><a href="#agent-quickstart">Use the x402 endpoint directly →</a></p>
         <p class="muted">Introductory price for the first three external buyers · real USDC on Base · report opens here after payment.</p>
       </section>
 
