@@ -78,7 +78,15 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .price-pill { padding: 9px 12px; border-radius: 999px; background: #ffe39a; color: #241b05; font-weight: 850; white-space: nowrap; }
       .purchase .demo-form { margin-bottom: 12px; }
       .purchase .button { padding-inline: 22px; }
+      .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 26px 0; }
+      .choice { padding: 20px; border-radius: 16px; }
+      .choice.preview { border: 1px solid #315343; background: #0b1812; }
+      .choice.live { border: 2px solid #73f7b1; background: #10241a; }
+      .choice h2 { margin: 7px 0 8px; font-size: 1.35rem; }
+      .choice ul { margin: 12px 0 0; padding-left: 20px; color: #a8c7b8; line-height: 1.65; }
+      .not-live { color: #ffe3a0; font-weight: 750; }
       @media (max-width: 620px) { .demo-form { flex-direction: column; } }
+      @media (max-width: 620px) { .choice-grid { grid-template-columns: 1fr; } }
       .links { display: flex; flex-wrap: wrap; gap: 18px; padding: 0; list-style: none; }
       .warning { padding: 16px 18px; border: 1px solid #725b24; border-radius: 12px; background: #211b0d; color: #ffe3a0; }
       .status { display: inline-flex; align-items: center; gap: 8px; color: #a8c7b8; }
@@ -90,7 +98,30 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
     <main>
       <div class="eyebrow">Pay per request with USDC</div>
       <h1>Current crypto research for humans and agents.</h1>
-      <p class="lead">Send one topic to the API. x402 handles payment before a sourced, up-to-date research report is generated.</p>
+      <p class="lead">Ask about an ecosystem, protocol, token, market, or security event. After payment, the API researches your exact question and returns a newly generated report with sources.</p>
+
+      <section class="choice-grid" aria-label="Free preview and paid research comparison">
+        <div class="choice preview">
+          <div class="label">Free preview</div>
+          <h2>See the format</h2>
+          <div class="not-live">Static example — no new research</div>
+          <ul>
+            <li>No wallet or payment</li>
+            <li>Shows how a report is structured</li>
+            <li>Does not answer your question</li>
+          </ul>
+        </div>
+        <div class="choice live">
+          <div class="label">Paid report</div>
+          <h2>Research your question now</h2>
+          <div><strong>${safePrice} USDC on Base</strong></div>
+          <ul>
+            <li>Fresh web research for your topic</li>
+            <li>Summary, key findings, and risks</li>
+            <li>Direct source links and timestamp</li>
+          </ul>
+        </div>
+      </section>
 
       <section class="purchase" id="buy">
         <div class="purchase-top">
@@ -100,10 +131,10 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
           </div>
           <div class="price-pill">${safePrice} USDC</div>
         </div>
-        <p>Type what you want researched. You will see the secure wallet payment screen before anything is charged.</p>
+        <p>Type your real question below. The next screen shows the exact wallet charge before you approve it.</p>
         <form class="demo-form" action="/buy" method="get">
           <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required placeholder="Example: What changed on Base this week?" aria-label="Paid research topic" />
-          <button class="button" type="submit">Buy report</button>
+          <button class="button" type="submit">Continue to secure payment</button>
         </form>
         <p class="muted">Introductory price for the first three external buyers · real USDC on Base · report opens here after payment.</p>
       </section>
@@ -132,11 +163,11 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   "researchedAt": "..."
 }</code></pre>
 
-      <h2 id="free-demo">Try the free preview</h2>
-      <p>Enter a topic to preview the report format. This free preview is illustrative and does not perform live research or charge a wallet.</p>
+      <h2 id="free-demo">Free report-format preview</h2>
+      <p class="warning"><strong>This is not live research.</strong> Changing the topic below only changes the example heading. Purchase a report above to research and answer your actual question.</p>
       <form class="demo-form" id="demo-form">
         <input class="demo-input" id="demo-topic" name="topic" type="text" minlength="3" maxlength="500" required value="What changed in the Base ecosystem this week?" aria-label="Research topic" />
-        <button class="button" type="submit">Generate preview</button>
+        <button class="button secondary" type="submit">Update example heading</button>
       </form>
       <article class="report">
         <div class="report-header">
@@ -146,11 +177,12 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
           </div>
           <span class="badge">Sources included</span>
         </div>
-        <p><strong>Short summary:</strong> Recent ecosystem activity is organized into the developments most relevant to builders, users, and agent operators.</p>
-        <div class="finding"><strong>1. Key ecosystem development</strong><span class="muted">What happened, why it matters, and the date it was reported.</span></div>
-        <div class="finding"><strong>2. Adoption or infrastructure signal</strong><span class="muted">A concise explanation backed by a direct source link.</span></div>
-        <div class="finding"><strong>3. Risks and uncertainty</strong><span class="muted">Clear separation between confirmed facts, reported claims, and inference.</span></div>
-        <p><strong>Sources:</strong> Direct links to the official announcements and other relevant primary material.</p>
+        <p><strong>Short summary:</strong> A paid report begins with a concise answer to the buyer's exact question and identifies the developments that matter most.</p>
+        <div class="finding"><strong>1. What changed</strong><span class="muted">The event, announcement, metric, or protocol change—plus when it happened.</span></div>
+        <div class="finding"><strong>2. Why it matters</strong><span class="muted">The likely impact on builders, users, liquidity, adoption, or agent workflows.</span></div>
+        <div class="finding"><strong>3. Risks and uncertainty</strong><span class="muted">What is confirmed, what is merely reported, and what remains uncertain.</span></div>
+        <p><strong>Sources:</strong> Clickable links to the material used for the report.</p>
+        <p class="muted"><strong>Researched at:</strong> A timestamp showing when the paid report was generated.</p>
       </article>
 
       <p class="muted">Building an agent? Open the <a href="/demo">raw JSON demo response</a> instead.</p>

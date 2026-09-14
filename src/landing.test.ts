@@ -17,10 +17,14 @@ test("renders public API details and escapes environment values", () => {
   assert.match(html, /Testnet service; test USDC has no real-world value/);
   assert.match(html, /href="#free-demo"/);
   assert.match(html, /raw JSON demo response/);
-  assert.match(html, /Try the free preview/);
+  assert.match(html, /Free report-format preview/);
   assert.match(html, /aria-label="Research topic"/);
-  assert.match(html, /Generate preview/);
+  assert.match(html, /Update example heading/);
   assert.match(html, /Free static preview/);
+  assert.match(html, /Static example — no new research/);
+  assert.match(html, /Research your question now/);
+  assert.match(html, /This is not live research/);
+  assert.match(html, /Continue to secure payment/);
   assert.match(html, /previewTopic\.textContent/);
   assert.match(html, /action="\/buy"/);
   assert.match(html, /Buy report/);
