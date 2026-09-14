@@ -159,6 +159,35 @@ The topic must contain 3–500 characters.
 
 JSON containing \`topic\`, \`report\`, \`sources\`, and \`researchedAt\`. Send the request with an x402-compatible client; it should handle the initial HTTP 402 challenge, sign the USDC authorization, and retry automatically.
 
+## Important payment behavior
+
+The first HTTP 402 response is the payment challenge, not an error and not a completed purchase. Do not stop after receiving it. Use an x402-compatible client with a funded signer so it can read the challenge, authorize ${config.price} USDC on ${config.network}, and retry the same request with the payment header. A plain \`fetch\` or \`curl\` call will only receive the challenge.
+
+The buyer wallet must hold at least ${config.price} USDC on ${config.network}. Keep the private key in the agent's secret store and use a dedicated low-balance wallet.
+
+### Node.js buyer
+
+\`\`\`js
+import { ExactEvmScheme } from "@x402/evm/exact/client";
+import { wrapFetchWithPayment, x402Client } from "@x402/fetch";
+import { privateKeyToAccount } from "viem/accounts";
+
+const client = new x402Client();
+client.register("eip155:*", new ExactEvmScheme(
+  privateKeyToAccount(process.env.EVM_PRIVATE_KEY)
+));
+
+const paidFetch = wrapFetchWithPayment(fetch, client);
+const response = await paidFetch("${publicBaseUrl}/research", {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({ topic: "Which Base projects launched this month?" })
+});
+
+if (!response.ok) throw new Error(\`Research request failed: \${response.status}\`);
+console.log(await response.json());
+\`\`\`
+
 ## Discovery
 
 - Manifest: ${publicBaseUrl}/.well-known/x402
@@ -181,6 +210,6 @@ export function createLlmsText(config: PublicApiConfig): string {
 - OpenAPI specification: ${publicBaseUrl}/openapi.json
 - Source and client: https://github.com/stgzwpzy8w-eng/x402-crypto-research-api
 
-Use it to find credible new Base launches, investigate a token, or compare Base projects. The paid endpoint returns evidence, market-quality analysis, risk flags, exclusions, a ranked conclusion, source links, and researchedAt. A compatible x402 client handles the HTTP 402 challenge and payment automatically. Use a dedicated low-balance wallet.
+Use it to find credible new Base launches, investigate a token, or compare Base projects. The paid endpoint returns evidence, market-quality analysis, risk flags, exclusions, a ranked conclusion, source links, and researchedAt. The first HTTP 402 response is the payment challenge, not a failure: an x402-compatible client must sign the ${config.price} USDC authorization and retry the request. Plain fetch or curl stops too early. Buyer instructions: ${publicBaseUrl}/skill.md. Use a funded, dedicated low-balance wallet on ${config.network}.
 `;
 }

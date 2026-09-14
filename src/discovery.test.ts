@@ -48,4 +48,15 @@ test("publishes an agent skill document", () => {
   assert.match(skill, /POST https:\/\/x402-crypto-research-api-production\.up\.railway\.app\/research/);
   assert.match(skill, /\.well-known\/x402/);
   assert.match(skill, /\$0\.08 USDC/);
+  assert.match(skill, /first HTTP 402 response is the payment challenge/i);
+  assert.match(skill, /wrapFetchWithPayment/);
+  assert.match(skill, /EVM_PRIVATE_KEY/);
+});
+
+test("warns plain HTTP clients not to stop at the payment challenge", () => {
+  const text = createLlmsText(config);
+
+  assert.match(text, /first HTTP 402 response is the payment challenge/i);
+  assert.match(text, /Plain fetch or curl stops too early/);
+  assert.match(text, /\/skill\.md/);
 });
