@@ -166,6 +166,24 @@ Prisuppskattningen gäller standardpriserna för `gpt-5.4-mini`: $0,75 per miljo
 
 Betapriset är `$0.08` USDC. Ett uppmätt test kostade uppskattningsvis `$0.031940`, vilket motsvarar cirka 60 % bruttomarginal före hosting och andra kostnader. Mät fler rapporter innan priset används på mainnet.
 
+## Köptrattsmätning
+
+Servern skriver integritetsvänliga JSON-händelser till Railway-loggen. Inga IP-adresser,
+wallet-adresser, privata nycklar eller researchämnen ingår.
+
+- `landing_view`: startsidan öppnades.
+- `purchase_attempt`: en människa eller agent begärde den betalda resursen.
+- `payment_required`: servern svarade med x402-betalningskravet (`HTTP 402`).
+- `payment_submitted`: klienten skickade en x402-betalningssignatur; själva signaturen loggas aldrig.
+- `payment_rejected`: en inskickad betalningssignatur avvisades och behöver felsökas.
+- `purchase_completed`: betalningen passerade och rapporten skapades.
+
+Ett `payment_required` utan efterföljande `payment_submitted` betyder normalt att klienten bara gjorde den första discovery-förfrågan eller saknade en betalningskapabel x402-klient. Det ska inte ensamt räknas som ett facilitatorfel eller som ett verkligt köpavhopp.
+
+Filtrera Railway-loggarna på `"type":"funnel"` eller på ett händelsenamn. Lägg till
+`?ref=gold-402`, `?ref=discord` eller en annan kort etikett i en delad startsidelänk för
+att se varifrån ett besök kom. Okända eller saknade etiketter sparas som `direct`.
+
 ## MVP-begränsningar
 
 - Lägg till idempotens, jobbspårning, återförsök och en tydlig återbetalningspolicy före produktion.
