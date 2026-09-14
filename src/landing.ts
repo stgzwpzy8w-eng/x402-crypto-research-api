@@ -183,6 +183,8 @@ const report = await response.json();</code></pre>
       <h2>Machine-readable documentation</h2>
       <ul class="links">
         <li><a href="/openapi.json">OpenAPI specification</a></li>
+        <li><a href="/.well-known/x402">x402 discovery manifest</a></li>
+        <li><a href="/skill.md">Agent skill instructions</a></li>
         <li><a href="/llms.txt">LLM integration guide</a></li>
         <li><a href="/health">Service health</a></li>
         <li><a href="https://github.com/stgzwpzy8w-eng/x402-crypto-research-api">GitHub source and client</a></li>

@@ -12,7 +12,12 @@ import {
 import { loadServerConfig } from "./config.js";
 import { formatResearchCost } from "./cost.js";
 import { demoResearchResult } from "./demo.js";
-import { createLlmsText, createOpenApiDocument } from "./discovery.js";
+import {
+  createLlmsText,
+  createOpenApiDocument,
+  createSkillText,
+  createX402Manifest,
+} from "./discovery.js";
 import { renderLandingPage, renderResearchResultPage } from "./landing.js";
 import { createResearcher } from "./research.js";
 import { normalizeTopic } from "./topic.js";
@@ -50,6 +55,12 @@ app.get("/demo", (_req: Request, res: Response) => {
 });
 app.get("/openapi.json", (_req: Request, res: Response) => {
   res.json(createOpenApiDocument(config));
+});
+app.get("/.well-known/x402", (_req: Request, res: Response) => {
+  res.json(createX402Manifest(config));
+});
+app.get("/skill.md", (_req: Request, res: Response) => {
+  res.type("text/markdown").send(createSkillText(config));
 });
 app.get("/llms.txt", (_req: Request, res: Response) => {
   res.type("text/plain").send(createLlmsText(config));
