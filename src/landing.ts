@@ -163,27 +163,44 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   "researchedAt": "..."
 }</code></pre>
 
-      <h2 id="free-demo">Free report-format preview</h2>
-      <p class="warning"><strong>This is not live research.</strong> Changing the topic below only changes the example heading. Purchase a report above to research and answer your actual question.</p>
-      <form class="demo-form" id="demo-form">
-        <input class="demo-input" id="demo-topic" name="topic" type="text" minlength="3" maxlength="500" required value="What changed in the Base ecosystem this week?" aria-label="Research topic" />
-        <button class="button secondary" type="submit">Update example heading</button>
-      </form>
+      <h2 id="free-demo">Complete example report</h2>
+      <p class="warning"><strong>Previously generated example.</strong> This report was researched on September 13, 2026. It shows the real level of detail and source format, but it is not being refreshed on this page.</p>
       <article class="report">
         <div class="report-header">
           <div>
-            <div class="label">Free static preview</div>
-            <h3 class="report-title" id="preview-topic">What changed in the Base ecosystem this week?</h3>
+            <div class="label">Real report output · September 13, 2026</div>
+            <h3 class="report-title">What changed in the Solana ecosystem this week?</h3>
           </div>
-          <span class="badge">Sources included</span>
+          <span class="badge">3 sources</span>
         </div>
-        <p><strong>Short summary:</strong> A paid report begins with a concise answer to the buyer's exact question and identifies the developments that matter most.</p>
-        <div class="finding"><strong>1. What changed</strong><span class="muted">The event, announcement, metric, or protocol change—plus when it happened.</span></div>
-        <div class="finding"><strong>2. Why it matters</strong><span class="muted">The likely impact on builders, users, liquidity, adoption, or agent workflows.</span></div>
-        <div class="finding"><strong>3. Risks and uncertainty</strong><span class="muted">What is confirmed, what is merely reported, and what remains uncertain.</span></div>
-        <p><strong>Sources:</strong> Clickable links to the material used for the report.</p>
-        <p class="muted"><strong>Researched at:</strong> A timestamp showing when the paid report was generated.</p>
+        <p><strong>Short summary:</strong> Solana's latest activity centered on stablecoin payments, tokenized real-world assets, and network performance. Confirmed ecosystem updates included new payment infrastructure from Western Union and MoneyGram, continued growth in tokenized assets, and higher transaction throughput.</p>
+        <div class="finding"><strong>1. Payments infrastructure expanded</strong><span class="muted">Western Union introduced a Visa card backed by USDPT issued on Solana, while MoneyGram launched an API connecting digital-asset ramps with its retail cash network.</span></div>
+        <div class="finding"><strong>2. Tokenized assets continued growing</strong><span class="muted">Solana's ecosystem roundup reported more than $4B in real-world asset value, while tokenized-stock products passed new asset and trading-volume milestones.</span></div>
+        <div class="finding"><strong>3. Network activity and speed improved</strong><span class="muted">The network reported a record day for non-vote transactions and shorter target slot times. Separate engineering work continued toward lower latency and larger transactions.</span></div>
+        <div class="finding"><strong>Risks and uncertainty</strong><span class="muted">Some weekly figures came from third-party research and should be treated as reported data. Several performance items described ongoing engineering work rather than changes already deployed to mainnet.</span></div>
+        <p><strong>Sources</strong></p>
+        <ul>
+          <li><a href="https://solana.com/news/solana-ecosystem-roundup-august-2026" rel="noreferrer">Solana Ecosystem Roundup: August 2026</a></li>
+          <li><a href="https://soldatalab.com/articles/solana-weekly-news-review-august-31-september-6-2026.html" rel="noreferrer">SOL Weekly News Review: August 31–September 6, 2026</a></li>
+          <li><a href="https://solana.com/news" rel="noreferrer">Solana ecosystem and developer updates</a></li>
+        </ul>
+        <p class="muted"><strong>Researched at:</strong> September 13, 2026. Historical example; claims may no longer be current.</p>
       </article>
+
+      <section class="purchase">
+        <div class="purchase-top">
+          <div>
+            <div class="eyebrow">Want an updated report?</div>
+            <h2>Research your own topic now</h2>
+          </div>
+          <div class="price-pill">${safePrice} USDC</div>
+        </div>
+        <form class="demo-form" action="/buy" method="get">
+          <input type="hidden" name="ref" value="sample" />
+          <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required value="What changed in the Solana ecosystem this week?" aria-label="Sample report follow-up topic" />
+          <button class="button" type="submit">Research this topic now</button>
+        </form>
+      </section>
 
       <p class="muted">Building an agent? Open the <a href="/demo">raw JSON demo response</a> instead.</p>
 
@@ -238,16 +255,6 @@ API_URL=https://x402-crypto-research-api-production.up.railway.app/research</cod
       <p class="status"><span class="dot"></span> Service online</p>
       <footer>Payments are sent to <code>${safePayTo}</code>. ${paymentNotice}</footer>
     </main>
-    <script>
-      const demoForm = document.getElementById("demo-form");
-      const demoTopic = document.getElementById("demo-topic");
-      const previewTopic = document.getElementById("preview-topic");
-      demoForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        previewTopic.textContent = demoTopic.value.trim();
-        previewTopic.scrollIntoView({ behavior: "smooth", block: "center" });
-      });
-    </script>
   </body>
 </html>`;
 };
