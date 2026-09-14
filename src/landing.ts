@@ -82,6 +82,9 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .payment-ready h3 { margin-bottom: 12px; }
       .payment-ready ol { margin: 0; padding-left: 22px; color: #d7cba8; line-height: 1.7; }
       .payment-ready .wallet-link { display: inline-block; margin-top: 12px; }
+      .buy-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 18px 0; }
+      .buy-step { padding: 15px; border: 1px solid #725b24; border-radius: 12px; background: #171409; color: #d7cba8; line-height: 1.45; }
+      .buy-step-number { display: block; margin-bottom: 7px; color: #ffe39a; font-size: .78rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
       .path-label { margin-top: 22px; color: #ffe39a; font-weight: 800; }
       .prompt-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 14px 0 18px; }
       .prompt-grid form { margin: 0; }
@@ -97,6 +100,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       @media (max-width: 620px) { .demo-form { flex-direction: column; } }
       @media (max-width: 620px) { .choice-grid { grid-template-columns: 1fr; } }
       @media (max-width: 720px) { .prompt-grid { grid-template-columns: 1fr; } }
+      @media (max-width: 720px) { .buy-steps { grid-template-columns: 1fr; } }
       .links { display: flex; flex-wrap: wrap; gap: 18px; padding: 0; list-style: none; }
       .warning { padding: 16px 18px; border: 1px solid #725b24; border-radius: 12px; background: #211b0d; color: #ffe3a0; }
       .status { display: inline-flex; align-items: center; gap: 8px; color: #a8c7b8; }
@@ -142,6 +146,12 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
           <div class="price-pill">${safePrice} USDC</div>
         </div>
         <p>Ask for token due diligence, launch screening, or ecosystem intelligence. The next screen shows the exact wallet charge before you approve it.</p>
+        <h3>Buy a report in about 30 seconds</h3>
+        <div class="buy-steps" aria-label="How to buy a report">
+          <div class="buy-step"><span class="buy-step-number">1 · Ask</span>Choose a ready-made question below or type your own Base research topic.</div>
+          <div class="buy-step"><span class="buy-step-number">2 · Connect</span>Connect a compatible wallet holding at least <strong>${safePrice} USDC on Base</strong>.</div>
+          <div class="buy-step"><span class="buy-step-number">3 · Approve</span>Review the exact charge, approve it, and receive the fresh report on this page.</div>
+        </div>
         <div class="payment-ready">
           <h3>Before you continue</h3>
           <ol>

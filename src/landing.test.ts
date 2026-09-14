@@ -24,6 +24,10 @@ test("renders public API details and escapes environment values", () => {
   assert.match(html, /Investigate your Base question/);
   assert.match(html, /Continue — I have USDC on Base/);
   assert.match(html, /Before you continue/);
+  assert.match(html, /Buy a report in about 30 seconds/);
+  assert.match(html, /1 · Ask/);
+  assert.match(html, /2 · Connect/);
+  assert.match(html, /3 · Approve/);
   assert.match(html, /Coinbase Wallet/);
   assert.match(html, /never asks for your recovery phrase or private key/);
   assert.match(html, /For AI agents/);
