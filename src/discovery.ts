@@ -1,6 +1,7 @@
 type PublicApiConfig = {
   price: string;
   network: string;
+  payTo?: string;
 };
 
 const publicBaseUrl = "https://x402-crypto-research-api-production.up.railway.app";
@@ -20,6 +21,12 @@ export function createOpenApiDocument(config: PublicApiConfig) {
           operationId: "researchCryptoTopic",
           summary: "Generate a current crypto research report",
           description: `Requires an x402 payment of ${config.price} USDC on ${config.network}.`,
+          "x-payment-info": {
+            price: config.price,
+            currency: "USDC",
+            network: config.network,
+            protocols: [{ x402: {} }],
+          },
           requestBody: {
             required: true,
             content: {
@@ -85,6 +92,80 @@ export function createOpenApiDocument(config: PublicApiConfig) {
       },
     },
   };
+}
+
+export function createX402Manifest(config: PublicApiConfig) {
+  return {
+    name: "x402 Crypto Research API",
+    description: "Fresh, sourced crypto research for humans and AI agents.",
+    version: "0.1.0",
+    homepage: publicBaseUrl,
+    skill: `${publicBaseUrl}/skill.md`,
+    openapi: `${publicBaseUrl}/openapi.json`,
+    resources: [
+      {
+        url: `${publicBaseUrl}/research`,
+        method: "POST",
+        type: "http",
+        x402Version: 2,
+        description: "Generate a current crypto research report with source links.",
+        accepts: [
+          {
+            scheme: "exact",
+            network: config.network,
+            price: config.price,
+            currency: "USDC",
+            ...(config.payTo ? { payTo: config.payTo } : {}),
+          },
+        ],
+        input: {
+          contentType: "application/json",
+          schema: {
+            type: "object",
+            properties: { topic: { type: "string", minLength: 3, maxLength: 500 } },
+            required: ["topic"],
+            additionalProperties: false,
+          },
+        },
+      },
+    ],
+  };
+}
+
+export function createSkillText(config: PublicApiConfig): string {
+  return `# x402 Crypto Research API
+
+## Capability
+
+Generate a fresh, concise crypto research report with source links for a supplied topic.
+
+## Paid operation
+
+- Endpoint: POST ${publicBaseUrl}/research
+- Price: ${config.price} USDC
+- Network: ${config.network}
+- Protocol: x402 v2, exact payment
+- Content-Type: application/json
+
+## Input
+
+\`\`\`json
+{"topic":"What changed in the Base ecosystem this week?"}
+\`\`\`
+
+The topic must contain 3–500 characters.
+
+## Output
+
+JSON containing \`topic\`, \`report\`, \`sources\`, and \`researchedAt\`. Send the request with an x402-compatible client; it should handle the initial HTTP 402 challenge, sign the USDC authorization, and retry automatically.
+
+## Discovery
+
+- Manifest: ${publicBaseUrl}/.well-known/x402
+- OpenAPI: ${publicBaseUrl}/openapi.json
+- Free response example: ${publicBaseUrl}/demo
+- Source: https://github.com/stgzwpzy8w-eng/x402-crypto-research-api
+`;
 }
 
 export function createLlmsText(config: PublicApiConfig): string {
