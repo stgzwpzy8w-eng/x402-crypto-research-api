@@ -24,10 +24,11 @@ const escapeHtml = (value: string) =>
       })[character] ?? character,
   );
 
-export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
+export const renderLandingPage = ({ price, network, payTo }: LandingConfig, source = "direct") => {
   const safePrice = escapeHtml(price);
   const safeNetwork = escapeHtml(network);
   const safePayTo = escapeHtml(payTo);
+  const safeSource = escapeHtml(source);
   const paymentNotice = network === "eip155:8453"
     ? "Mainnet service; payments use real USDC on Base."
     : "Testnet service; test USDC has no real-world value.";
@@ -166,11 +167,12 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
         <div class="path-label">For people with a wallet</div>
         <p class="muted">Choose a ready-made investigation or write your own:</p>
         <div class="prompt-grid" aria-label="Ready-made Base intelligence questions">
-          <form action="/buy" method="get"><input type="hidden" name="ref" value="prompt-launches" /><input type="hidden" name="topic" value="Which Base projects launched this month and show credible traction?" /><button class="prompt-button" type="submit">Find credible new Base launches →</button></form>
-          <form action="/buy" method="get"><input type="hidden" name="ref" value="prompt-token-risk" /><input type="hidden" name="topic" value="Analyze this Base token's contract, liquidity, holder concentration, suspicious activity, and key risks: 0x..." /><button class="prompt-button" type="submit">Investigate a Base token →</button></form>
-          <form action="/buy" method="get"><input type="hidden" name="ref" value="prompt-compare" /><input type="hidden" name="topic" value="Compare these Base projects by verified traction, liquidity quality, concentration, and risk: PROJECT A vs PROJECT B" /><button class="prompt-button" type="submit">Compare two Base projects →</button></form>
+          <form action="/buy" method="get"><input type="hidden" name="ref" value="${safeSource}" /><input type="hidden" name="intent" value="prompt-launches" /><input type="hidden" name="topic" value="Which Base projects launched this month and show credible traction?" /><button class="prompt-button" type="submit">Find credible new Base launches →</button></form>
+          <form action="/buy" method="get"><input type="hidden" name="ref" value="${safeSource}" /><input type="hidden" name="intent" value="prompt-token-risk" /><input type="hidden" name="topic" value="Analyze this Base token's contract, liquidity, holder concentration, suspicious activity, and key risks: 0x..." /><button class="prompt-button" type="submit">Investigate a Base token →</button></form>
+          <form action="/buy" method="get"><input type="hidden" name="ref" value="${safeSource}" /><input type="hidden" name="intent" value="prompt-compare" /><input type="hidden" name="topic" value="Compare these Base projects by verified traction, liquidity quality, concentration, and risk: PROJECT A vs PROJECT B" /><button class="prompt-button" type="submit">Compare two Base projects →</button></form>
         </div>
         <form class="demo-form" action="/buy" method="get">
+          <input type="hidden" name="ref" value="${safeSource}" />
           <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required placeholder="Example: Which Base projects launched this month and show real traction?" aria-label="Paid research topic" />
           <button class="button" type="submit">Continue — I have USDC on Base</button>
         </form>
@@ -235,7 +237,8 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
           <div class="price-pill">${safePrice} USDC</div>
         </div>
         <form class="demo-form" action="/buy" method="get">
-          <input type="hidden" name="ref" value="sample" />
+          <input type="hidden" name="ref" value="${safeSource}" />
+          <input type="hidden" name="intent" value="sample" />
           <input class="demo-input" name="topic" type="text" minlength="3" maxlength="500" required value="Which Base projects launched this month and show credible traction?" aria-label="Sample report follow-up topic" />
           <button class="button" type="submit">Research this topic now</button>
         </form>
@@ -296,6 +299,24 @@ API_URL=https://x402-crypto-research-api-production.up.railway.app/research</cod
     </main>
   </body>
 </html>`;
+};
+
+type FunnelSnapshot = {
+  startedAt: string;
+  generatedAt: string;
+  totals: Record<string, number>;
+  conversion: Record<string, number | null>;
+  bySource: Array<Record<string, string | number>>;
+};
+
+export const renderDashboardPage = (snapshot: FunnelSnapshot) => {
+  const metric = (label: string, key: string) => `<div class="metric"><span>${label}</span><strong>${snapshot.totals[key] ?? 0}</strong></div>`;
+  const percent = (value: number | null | undefined) => value == null ? "—" : `${(value * 100).toFixed(1)}%`;
+  const rows = snapshot.bySource.length === 0
+    ? '<tr><td colspan="7">No traffic recorded since the latest server start.</td></tr>'
+    : snapshot.bySource.map((row) => `<tr><td>${escapeHtml(String(row.source))}</td><td>${row.landing_view}</td><td>${row.purchase_attempt}</td><td>${row.payment_required}</td><td>${row.payment_submitted}</td><td>${row.payment_rejected}</td><td>${row.purchase_completed}</td></tr>`).join("");
+
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta http-equiv="refresh" content="30"/><title>Intel402 funnel dashboard</title><style>:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif}body{margin:0;background:#07110d;color:#e8fff4}main{width:min(1100px,calc(100% - 32px));margin:auto;padding:48px 0}.eyebrow{color:#73f7b1;font-weight:800;letter-spacing:.1em;text-transform:uppercase}h1{font-size:clamp(2rem,5vw,4rem);margin:.3em 0}.muted{color:#8eb7a2}.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:28px 0}.metric{padding:18px;border:1px solid #214634;border-radius:14px;background:#0c1b14}.metric span{display:block;color:#8eb7a2;font-size:.8rem}.metric strong{display:block;margin-top:8px;font-size:2rem}table{width:100%;border-collapse:collapse;background:#0c1b14;border-radius:14px;overflow:hidden}th,td{padding:12px;border-bottom:1px solid #214634;text-align:left}th{color:#73f7b1;font-size:.78rem;text-transform:uppercase}a{color:#73f7b1}.conversion{display:flex;flex-wrap:wrap;gap:16px;margin:18px 0 28px}.pill{padding:10px 14px;border:1px solid #2b694a;border-radius:999px}</style></head><body><main><div class="eyebrow">Intel402 · live process memory</div><h1>Acquisition funnel</h1><p class="muted">Aggregated counters only—no wallet addresses, topics, IP addresses, or personal data. Counters reset when Railway restarts. Auto-refreshes every 30 seconds.</p><div class="metrics">${metric("Landing views", "landing_view")}${metric("Purchase attempts", "purchase_attempt")}${metric("Payment challenges", "payment_required")}${metric("Payments submitted", "payment_submitted")}${metric("Rejected payments", "payment_rejected")}${metric("Completed purchases", "purchase_completed")}</div><div class="conversion"><div class="pill">Landing → attempt: <strong>${percent(snapshot.conversion.landingToAttempt)}</strong></div><div class="pill">Submitted → completed: <strong>${percent(snapshot.conversion.submittedToCompleted)}</strong></div><div class="pill">Landing → completed: <strong>${percent(snapshot.conversion.landingToCompleted)}</strong></div></div><h2>Traffic sources</h2><table><thead><tr><th>Source</th><th>Visits</th><th>Attempts</th><th>402</th><th>Submitted</th><th>Rejected</th><th>Completed</th></tr></thead><tbody>${rows}</tbody></table><p class="muted">Counting since ${escapeHtml(snapshot.startedAt)} · generated ${escapeHtml(snapshot.generatedAt)}</p><p><a href="/">← Intel402 website</a> · <a href="/analytics.json">Raw JSON</a></p></main></body></html>`;
 };
 
 export const renderResearchResultPage = (result: ResearchResult) => {

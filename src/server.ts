@@ -19,10 +19,10 @@ import {
   createSkillText,
   createX402Manifest,
 } from "./discovery.js";
-import { renderLandingPage, renderResearchResultPage } from "./landing.js";
+import { renderDashboardPage, renderLandingPage, renderResearchResultPage } from "./landing.js";
 import { createResearcher } from "./research.js";
 import { normalizeTopic } from "./topic.js";
-import { funnelSource, logFunnelEvent, trackPaidRequest } from "./funnel.js";
+import { getFunnelSnapshot, logFunnelEvent, requestSource, trackPaidRequest } from "./funnel.js";
 import { createMcpHandler, createMcpServerCard } from "./mcp.js";
 
 const config = loadServerConfig();
@@ -48,8 +48,15 @@ const app = express();
 app.set("trust proxy", 1);
 app.use(express.json({ limit: "16kb" }));
 app.get("/", (req: Request, res: Response) => {
-  logFunnelEvent("landing_view", { source: funnelSource(req.query.ref) });
-  res.type("html").send(renderLandingPage(config));
+  const source = requestSource(req);
+  logFunnelEvent("landing_view", { source });
+  res.type("html").send(renderLandingPage(config, source));
+});
+app.get("/analytics.json", (_req: Request, res: Response) => {
+  res.set("Cache-Control", "no-store").json(getFunnelSnapshot());
+});
+app.get("/dashboard", (_req: Request, res: Response) => {
+  res.set("Cache-Control", "no-store").type("html").send(renderDashboardPage(getFunnelSnapshot()));
 });
 app.get("/assets/intel402-logo.png", (_req: Request, res: Response) => {
   const logoUrl = new URL("../intel402-logo.png", import.meta.url);
