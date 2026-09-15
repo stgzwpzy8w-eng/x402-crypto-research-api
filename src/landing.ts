@@ -46,13 +46,6 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .eyebrow { color: #73f7b1; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
       h1 { max-width: 720px; margin: 14px 0 18px; font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: .98; }
       .lead { max-width: 660px; color: #a8c7b8; font-size: 1.2rem; line-height: 1.6; }
-      .art-feature { display: grid; grid-template-columns: minmax(180px, 260px) 1fr; gap: 26px; align-items: center; margin: 34px 0 40px; padding: 18px; border: 1px solid #315343; border-radius: 20px; background: linear-gradient(135deg, #10241a, #0b1712); overflow: hidden; }
-      .art-frame { position: relative; margin: 0; }
-      .art-frame::after { content: ""; position: absolute; inset: 0; border: 1px solid rgba(232,255,244,.18); border-radius: 13px; box-shadow: inset 0 0 45px rgba(7,17,13,.35); pointer-events: none; }
-      .art-frame img { display: block; width: 100%; aspect-ratio: 724 / 798; object-fit: cover; border-radius: 13px; filter: saturate(.88) contrast(1.04); }
-      .art-copy h2 { margin: 8px 0 10px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.55rem, 3vw, 2.35rem); font-weight: 500; line-height: 1.08; }
-      .art-copy p { margin: 0; color: #a8c7b8; }
-      .art-credit { display: block; margin-top: 14px; color: #77a88f; font-size: .78rem; line-height: 1.5; }
       .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 36px 0; }
       .card, pre { border: 1px solid #214634; background: #0c1b14; border-radius: 16px; }
       .card { padding: 20px; }
@@ -105,7 +98,6 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .choice ul { margin: 12px 0 0; padding-left: 20px; color: #a8c7b8; line-height: 1.65; }
       .not-live { color: #ffe3a0; font-weight: 750; }
       @media (max-width: 620px) { .demo-form { flex-direction: column; } }
-      @media (max-width: 620px) { .art-feature { grid-template-columns: 110px 1fr; gap: 16px; padding: 13px; } }
       @media (max-width: 620px) { .choice-grid { grid-template-columns: 1fr; } }
       @media (max-width: 720px) { .prompt-grid { grid-template-columns: 1fr; } }
       @media (max-width: 720px) { .buy-steps { grid-template-columns: 1fr; } }
@@ -121,18 +113,6 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       <div class="eyebrow">Base Launch Intelligence · Pay with USDC</div>
       <h1>Investigate new Base launches before the crowd does.</h1>
       <p class="lead">Give us a Base token, protocol, or launch question. Get fresh research covering verified contracts, launch evidence, volume and liquidity, concentration, suspicious activity, exclusions, and a ranked conclusion.</p>
-
-      <section class="art-feature" aria-label="Art and intelligence">
-        <figure class="art-frame">
-          <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Vincent%20van%20Gogh%20-%20Self%20Portrait%20with%20Bandaged%20Ear%20and%20Pipe.jpg" alt="Vincent van Gogh's 1889 self-portrait with a bandaged ear and pipe" loading="lazy" />
-        </figure>
-        <div class="art-copy">
-          <div class="eyebrow">Look closer</div>
-          <h2>Every signal needs interpretation.</h2>
-          <p>Raw activity is only the canvas. We trace sources, question appearances, and turn scattered evidence into a defensible view.</p>
-          <small class="art-credit">Vincent van Gogh, <em>Self-portrait with bandaged ear and pipe</em>, 1889 · <a href="https://commons.wikimedia.org/wiki/File:Vincent_van_Gogh_-_Self_Portrait_with_Bandaged_Ear_and_Pipe.jpg" rel="noreferrer">public-domain image via Wikimedia Commons</a></small>
-        </div>
-      </section>
 
       <section class="choice-grid" aria-label="Free preview and paid research comparison">
         <div class="choice preview">
