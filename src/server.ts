@@ -51,6 +51,10 @@ app.get("/", (req: Request, res: Response) => {
   logFunnelEvent("landing_view", { source: funnelSource(req.query.ref) });
   res.type("html").send(renderLandingPage(config));
 });
+app.get("/assets/intel402-logo.png", (_req: Request, res: Response) => {
+  const logoUrl = new URL("../intel402-logo.png", import.meta.url);
+  res.type("image/png").send(readFileSync(logoUrl));
+});
 app.get("/health", (_req: Request, res: Response) => {
   res.json({ status: "ok" });
 });

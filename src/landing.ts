@@ -43,6 +43,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       * { box-sizing: border-box; }
       body { margin: 0; min-height: 100vh; background: #07110d; color: #e8fff4; }
       main { width: min(880px, calc(100% - 32px)); margin: 0 auto; padding: 72px 0; }
+      .brand-logo { display: block; width: min(100%, 680px); height: auto; margin: -22px 0 26px; object-fit: contain; object-position: left center; filter: drop-shadow(0 18px 34px rgba(0,0,0,.34)); }
       .eyebrow { color: #73f7b1; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
       h1 { max-width: 720px; margin: 14px 0 18px; font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: .98; }
       .lead { max-width: 660px; color: #a8c7b8; font-size: 1.2rem; line-height: 1.6; }
@@ -97,7 +98,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
       .choice h2 { margin: 7px 0 8px; font-size: 1.35rem; }
       .choice ul { margin: 12px 0 0; padding-left: 20px; color: #a8c7b8; line-height: 1.65; }
       .not-live { color: #ffe3a0; font-weight: 750; }
-      @media (max-width: 620px) { .demo-form { flex-direction: column; } }
+      @media (max-width: 620px) { main { padding-top: 42px; } .brand-logo { width: 100%; margin: -8px 0 22px; } .demo-form { flex-direction: column; } }
       @media (max-width: 620px) { .choice-grid { grid-template-columns: 1fr; } }
       @media (max-width: 720px) { .prompt-grid { grid-template-columns: 1fr; } }
       @media (max-width: 720px) { .buy-steps { grid-template-columns: 1fr; } }
@@ -110,6 +111,7 @@ export const renderLandingPage = ({ price, network, payTo }: LandingConfig) => {
   </head>
   <body>
     <main>
+      <img class="brand-logo" src="/assets/intel402-logo.png" width="2172" height="724" alt="Intel402 — Van Gogh-inspired crypto intelligence" />
       <div class="eyebrow">Base Launch Intelligence · Pay with USDC</div>
       <h1>Investigate new Base launches before the crowd does.</h1>
       <p class="lead">Give us a Base token, protocol, or launch question. Get fresh research covering verified contracts, launch evidence, volume and liquidity, concentration, suspicious activity, exclusions, and a ranked conclusion.</p>
